@@ -1,4 +1,4 @@
-package com.delivery.store.entity;
+package com.delivery.store.model.entity;
 
 import java.time.LocalDateTime;
 
