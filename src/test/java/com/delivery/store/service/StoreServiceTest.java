@@ -1,11 +1,14 @@
 package com.delivery.store.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import com.delivery.store.model.request.StoreRequestDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,5 +50,20 @@ class StoreServiceTest {
 
         StoreResponseDto store = storeService.findStore(1L);
         assertThat(storeEntity.getName()).isEqualTo(store.getName());
+    }
+
+    @Test
+    public void creareStore() {
+        StoreRequestDto storeRequest = StoreRequestDto.builder()
+                .name("곱돌이네")
+                .telephone("02-1234-5678")
+                .address("서울 송파구 송파1로 27")
+                .managerName("황윤호")
+                .businessNumber("123123933")
+                .build();
+
+        storeService.createStore(storeRequest);
+
+        verify(storeRepository).save(any());
     }
 }
