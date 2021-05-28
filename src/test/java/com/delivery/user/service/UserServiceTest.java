@@ -2,6 +2,7 @@ package com.delivery.user.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 
 import com.delivery.user.domain.DataStatus;
@@ -48,7 +49,7 @@ public class UserServiceTest {
         .status(DataStatus.DEFAULT)
         .build();
 
-    doReturn(null).when(userRepository).save(any());
+    doReturn(mockUser).when(userRepository).save(any());
 
     doReturn(Optional.of(mockUser)).when(userRepository).findById(userId);
 
@@ -58,7 +59,7 @@ public class UserServiceTest {
     Optional<User> savedUser = userService.findById(userId);
 
     //then
-    assertThat(savedUser.get().getId()).isEqualTo(userId);
+    assertThat(savedUser.get()).isEqualTo(mockUser);
   }
 
 }
