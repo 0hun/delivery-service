@@ -3,6 +3,7 @@ package com.delivery.user.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.delivery.user.dto.UserDto;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -25,6 +26,33 @@ public class UserTest {
 
     //then
     assertThat(user.getEmail()).isEqualTo(userDto.getEmail());
+  }
+
+  @DisplayName("User Entity 매핑")
+  @Test
+  void userEntityMapping() {
+    //given
+    UserDto userDto = UserDto.builder()
+        .email("whdudgns2654@naver.com")
+        .name("조영훈")
+        .password("asdqwe1234567!@#")
+        .phoneNumber("010-1234-1234")
+        .status(DataStatus.DEFAULT)
+        .build();
+
+    String email = userDto.getEmail();
+    String name = userDto.getName();
+    String password = userDto.getPassword();
+    String phoneNumber = userDto.getPhoneNumber();
+    DataStatus status = userDto.getStatus();
+
+    Assertions.assertAll(
+        () -> assertThat(email).isEqualTo("whdudgns2654@naver.com"),
+        () -> assertThat(name).isEqualTo("조영훈"),
+        () -> assertThat(password).isEqualTo("asdqwe1234567!@#"),
+        () -> assertThat(phoneNumber).isEqualTo("010-1234-1234"),
+        () -> assertThat(status).isEqualTo(DataStatus.DEFAULT)
+    );
   }
 
 }
