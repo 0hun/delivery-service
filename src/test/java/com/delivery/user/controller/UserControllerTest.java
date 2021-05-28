@@ -2,11 +2,9 @@ package com.delivery.user.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.Mockito.doNothing;
 
 import com.delivery.user.domain.DataStatus;
-import com.delivery.user.domain.User;
 import com.delivery.user.dto.UserDto;
 import com.delivery.user.service.UserService;
 import com.google.gson.Gson;
@@ -17,9 +15,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -52,27 +50,16 @@ public class UserControllerTest {
         .status(DataStatus.DEFAULT)
         .build();
 
-    User mockUser = User.builder()
-        .id(1L)
-        .email("whdudgns2654@naver.com")
-        .name("조영훈")
-        .password("asdqwe1234567!@#")
-        .phoneNumber("010-1234-1234")
-        .status(DataStatus.DEFAULT)
-        .build();
-
-    doReturn(mockUser).when(userService).addUser(any());
+    doNothing().when(userService).addUser(any());
 
     // when
     final ResultActions resultActions = mockMvc.perform(
-        MockMvcRequestBuilders.post("/users/signUp")
+        MockMvcRequestBuilders.post("/users")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new Gson().toJson(userDto)));
 
     // then
-    final MvcResult mvcResult = resultActions.andExpect(status().isCreated()).andReturn();
-
-    assertThat(mvcResult.getResponse().getStatus()).isEqualTo(201);
+    assertThat(resultActions.andReturn().getResponse().getStatus()).isEqualTo(HttpStatus.CREATED.value());
   }
 
 }

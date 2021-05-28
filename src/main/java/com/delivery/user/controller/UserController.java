@@ -4,7 +4,7 @@ import com.delivery.user.dto.UserDto;
 import com.delivery.user.service.UserService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Log4j2
+@Slf4j
 @RequestMapping("/users")
 @RequiredArgsConstructor // 초기화 되지 않은 final field에 대해 생성자를 생성. final field에 의존성 주입
 @RestController
@@ -26,7 +26,7 @@ public class UserController {
    * @param userDto 저장할 회원의 정보
    * @return ResponseEntity(성공시 201 code, 실패시 400 code)
    */
-  @PostMapping("/signUp")
+  @PostMapping()
   public ResponseEntity<Void> signUp(@RequestBody @Valid UserDto userDto) {
     userService.addUser(userDto);
 
