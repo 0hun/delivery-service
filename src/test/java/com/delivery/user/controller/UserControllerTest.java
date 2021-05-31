@@ -1,15 +1,23 @@
 package com.delivery.user.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.delivery.user.domain.DataStatus;
+import com.delivery.user.domain.User;
 import com.delivery.user.dto.UserDto;
 import com.delivery.user.service.UserService;
 import com.google.gson.Gson;
+import java.util.NoSuchElementException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -49,7 +57,16 @@ public class UserControllerTest {
         .status(DataStatus.DEFAULT)
         .build();
 
-    doNothing().when(userService).addUser(any());
+    User user = User.builder()
+        .id(1L)
+        .email("whdudgns2654@naver.com")
+        .name("조영훈")
+        .password("asdqwe1234567!@#")
+        .phoneNumber("010-1234-1234")
+        .status(DataStatus.DEFAULT)
+        .build();
+
+    doReturn(user).when(userService).addUser(any());
 
     // when
     // then
@@ -57,6 +74,7 @@ public class UserControllerTest {
         .content(new Gson().toJson(userDto))
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON))
+        .andExpect(redirectedUrl("/users/1"))
         .andExpect(status().isCreated())
         .andDo(print());
   }
@@ -75,6 +93,46 @@ public class UserControllerTest {
         .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().is4xxClientError())
         .andDo(print());
+  }
+
+  @DisplayName("회원 조회 성공 테스트")
+  @Test
+  void findUser() throws Exception {
+    // given
+    User user = User.builder()
+        .id(1L)
+        .email("whdudgns2654@naver.com")
+        .name("조영훈")
+        .password("asdqwe1234567!@#")
+        .phoneNumber("010-1234-1234")
+        .status(DataStatus.DEFAULT)
+        .build();
+
+    doReturn(user).when(userService).findById(1L);
+
+    // when
+    // then
+    mockMvc.perform(get("/users/" + 1L)
+        .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(content().json(new Gson().toJson(user)))
+        .andDo(print());
+  }
+
+  @DisplayName("회원 조회 실패 테스트")
+  @Test
+  void findUserFail() {
+    // given
+    long userId = 1L;
+
+    // when
+    doThrow(NoSuchElementException.class).when(userService).findById(userId);
+
+    // then
+    Throwable thrown = catchThrowable(() -> mockMvc.perform(get("/users/" + userId)
+        .accept(MediaType.APPLICATION_JSON)));
+
+    assertThat(thrown.getCause()).isInstanceOf(NoSuchElementException.class);
   }
 
 }
