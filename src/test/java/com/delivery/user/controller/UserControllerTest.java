@@ -61,4 +61,20 @@ public class UserControllerTest {
         .andDo(print());
   }
 
+  @DisplayName("회원 가입 실패 테스트 - 값이 없는 빈 객체 전달하여 회원 가입 실패 테스트")
+  @Test
+  void signUpFail() throws Exception {
+    // given
+    UserDto userDto = new UserDto();
+
+    // when
+    // then
+    mockMvc.perform(post("/users")
+        .content(new Gson().toJson(userDto))
+        .contentType(MediaType.APPLICATION_JSON)
+        .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().is4xxClientError())
+        .andDo(print());
+  }
+
 }
