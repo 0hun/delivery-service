@@ -1,8 +1,10 @@
 package com.delivery.user.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.delivery.user.domain.DataStatus;
 import com.delivery.user.dto.UserDto;
@@ -15,11 +17,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 @ExtendWith(MockitoExtension.class)
@@ -53,13 +52,13 @@ public class UserControllerTest {
     doNothing().when(userService).addUser(any());
 
     // when
-    final ResultActions resultActions = mockMvc.perform(
-        MockMvcRequestBuilders.post("/users")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(new Gson().toJson(userDto)));
-
     // then
-    assertThat(resultActions.andReturn().getResponse().getStatus()).isEqualTo(HttpStatus.CREATED.value());
+    mockMvc.perform(post("/users")
+        .content(new Gson().toJson(userDto))
+        .contentType(MediaType.APPLICATION_JSON)
+        .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isCreated())
+        .andDo(print());
   }
 
 }
