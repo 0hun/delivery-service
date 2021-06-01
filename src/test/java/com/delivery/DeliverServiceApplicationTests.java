@@ -8,6 +8,6 @@ class DeliverServiceApplicationTests {
 
   @Test
   void contextLoads() {
+    DeliverServiceApplication.main(new String[] {});
   }
-
 }
