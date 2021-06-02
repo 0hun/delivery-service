@@ -40,12 +40,14 @@ public class UserTest {
         .status(DataStatus.DEFAULT)
         .build();
 
+    //when
     String email = userDto.getEmail();
     String name = userDto.getName();
     String password = userDto.getPassword();
     String phoneNumber = userDto.getPhoneNumber();
     DataStatus status = userDto.getStatus();
 
+    //then
     Assertions.assertAll(
         () -> assertThat(email).isEqualTo("whdudgns2654@naver.com"),
         () -> assertThat(name).isEqualTo("조영훈"),
@@ -53,6 +55,26 @@ public class UserTest {
         () -> assertThat(phoneNumber).isEqualTo("010-1234-1234"),
         () -> assertThat(status).isEqualTo(DataStatus.DEFAULT)
     );
+  }
+
+  @DisplayName("User delete 테스트")
+  @Test
+  void userDelete() {
+    //given
+    User mockUser = User.builder()
+        .id(1L)
+        .email("whdudgns2654@naver.com")
+        .name("조영훈")
+        .password("asdqwe1234567!@#")
+        .phoneNumber("010-1234-1234")
+        .status(DataStatus.DEFAULT)
+        .build();
+
+    //when
+    mockUser.delete();
+
+    //then
+    assertThat(mockUser.getStatus()).isEqualTo(DataStatus.DELETED);
   }
 
 }

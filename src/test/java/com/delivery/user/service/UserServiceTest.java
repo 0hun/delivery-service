@@ -125,4 +125,41 @@ public class UserServiceTest {
     assertThat(existsUser).isEqualTo(false);
   }
 
+  @DisplayName("user 삭제 테스트")
+  @Test
+  void deleteUser() {
+    //given
+    User mockUser = User.builder()
+        .id(1L)
+        .email("whdudgns2654@naver.com")
+        .name("조영훈")
+        .password("asdqwe1234567!@#")
+        .phoneNumber("010-1234-1234")
+        .status(DataStatus.DEFAULT)
+        .build();
+
+    doReturn(Optional.of(mockUser)).when(userRepository).findById(mockUser.getId());
+
+    //when
+    User deletedUser = userService.delete(1L);
+
+    //then
+    assertThat(deletedUser.getStatus()).isEqualTo(DataStatus.DELETED);
+  }
+
+  @DisplayName("user 삭제 실패 테스트")
+  @Test
+  void deleteUserFail() {
+    //given
+    long userId = 1L;
+
+    doReturn(Optional.empty()).when(userRepository).findById(userId);
+
+    //when
+    Throwable thrown = catchThrowable(() -> userService.delete(userId));
+
+    //then
+    assertThat(thrown).isInstanceOf(NoSuchElementException.class);
+  }
+
 }

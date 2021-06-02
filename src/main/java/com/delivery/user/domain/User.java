@@ -89,4 +89,7 @@ public class User {
     return Objects.hash(id, email, password, name, phoneNumber, status, createdAt, updatedAt);
   }
 
+  public void delete() {
+    this.status = DataStatus.DELETED;
+  }
 }

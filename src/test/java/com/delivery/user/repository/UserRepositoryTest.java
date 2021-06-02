@@ -128,4 +128,27 @@ public class UserRepositoryTest {
     assertThat(existsUser).isEqualTo(false);
   }
 
+  @DisplayName("user 삭제 테스트")
+  @Test
+  void deleteUser() {
+    //given
+    UserDto userDto = UserDto.builder()
+        .email("whdudgns2654@naver.com")
+        .name("조영훈")
+        .password("asdqwe1234567!@#")
+        .phoneNumber("010-1234-1234")
+        .status(DataStatus.DEFAULT)
+        .build();
+
+    userRepository.save(userDto.toEntity());
+
+    //when
+    Optional<User> savedUser = userRepository.findById(1L);
+
+    savedUser.get().delete();
+
+    //then
+    assertThat(savedUser.get().getStatus()).isEqualTo(DataStatus.DELETED);
+  }
+
 }

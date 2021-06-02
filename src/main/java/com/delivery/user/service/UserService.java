@@ -28,4 +28,13 @@ public class UserService {
     return userRepository.save(userDto.toEntity());
   }
 
+  @Transactional
+  public User delete(long id) {
+    User savedUser = userRepository.findById(id)
+        .orElseThrow(NoSuchElementException::new);
+
+    savedUser.delete();
+
+    return savedUser;
+  }
 }
