@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.delivery.store.model.StoreEnableStatus;
 import com.delivery.store.model.entity.StoreEntity;
 import com.delivery.store.model.repository.StoreRepository;
 import com.delivery.store.model.request.StoreRequestDto;
@@ -41,8 +42,7 @@ class StoreServiceTest {
             .address("서울 송파구 송파1로 27")
             .managerName("황윤호")
             .businessNumber("123123933")
-//            .createdAt(LocalDateTime.now())
-//            .updatedAt(LocalDateTime.now())
+            .storeEnableStatus(StoreEnableStatus.ENABLED)
             .build();
 
         given(storeRepository.findById(1L)).willReturn(Optional.of(storeEntity));
@@ -85,10 +85,28 @@ class StoreServiceTest {
             .address("서울 송파구 송파1로 27")
             .managerName("황윤호")
             .businessNumber("123123933")
+            .storeEnableStatus(StoreEnableStatus.ENABLED)
             .build();
 
         given(storeRepository.findById(1L)).willReturn(Optional.of(storeEntity));
         StoreResponseDto store = storeService.updateStore(1L, storeRequest);
         assertThat(store.getName()).isEqualTo(storeRequest.getName());
+    }
+
+    @DisplayName("store_단건_비활성화")
+    @Test
+    void deleteStore() {
+        StoreEntity store = StoreEntity.builder()
+            .id(1L)
+            .name("곱돌이네")
+            .telephone("02-1234-5678")
+            .address("서울 송파구 송파1로 27")
+            .managerName("황윤호")
+            .businessNumber("123123933")
+            .build();
+
+        given(storeRepository.findById(1L)).willReturn(Optional.of(store));
+        storeService.deleteStore(1L);
+        assertThat(store.getStoreEnableStatus()).isEqualTo(StoreEnableStatus.DISABLED);
     }
 }

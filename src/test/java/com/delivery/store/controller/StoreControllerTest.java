@@ -3,6 +3,7 @@ package com.delivery.store.controller;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -17,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import com.delivery.store.model.StoreEnableStatus;
 import com.delivery.store.model.entity.StoreEntity;
 import com.delivery.store.model.request.StoreRequestDto;
 import com.delivery.store.model.response.StoreResponseDto;
@@ -71,6 +73,7 @@ class StoreControllerTest {
                 .address("서울 송파구 송파1로 27")
                 .managerName("황윤호")
                 .businessNumber("123123933")
+                .storeEnableStatus(StoreEnableStatus.ENABLED)
                 .build();
 
         given(storeService.createStore(storeRequest)).willReturn(store);
@@ -114,5 +117,18 @@ class StoreControllerTest {
             .andExpect(content().string(containsString("123123933")));
 
         verify(storeService).updateStore(eq(1L), eq(storeRequest));
+    }
+
+    @DisplayName("store_단건_비활성화")
+    @Test
+    void deleteStore() throws Exception {
+        String url = "/stores/1";
+
+        doNothing().when(storeService).deleteStore(1L);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(url)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+        verify(storeService).deleteStore(eq(1L));
     }
 }

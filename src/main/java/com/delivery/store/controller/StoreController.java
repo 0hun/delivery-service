@@ -2,6 +2,8 @@ package com.delivery.store.controller;
 
 import com.delivery.store.model.entity.StoreEntity;
 import com.delivery.store.model.request.StoreRequestDto;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +34,13 @@ public class StoreController {
     }
 
     @PutMapping("/{storeId}")
-    public StoreResponseDto updateStore(@PathVariable Long storeId, @RequestBody StoreRequestDto storeRequest) throws URISyntaxException {
+    public StoreResponseDto updateStore(@PathVariable Long storeId, @RequestBody StoreRequestDto storeRequest) {
         return storeService.updateStore(storeId, storeRequest);
+    }
+
+    @DeleteMapping("/{storeId}")
+    public ResponseEntity<?> deleteStore(@PathVariable Long storeId) {
+        storeService.deleteStore(storeId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
