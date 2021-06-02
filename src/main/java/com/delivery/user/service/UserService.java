@@ -19,6 +19,10 @@ public class UserService {
         .orElseThrow(NoSuchElementException::new);
   }
 
+  public boolean existsByEmail(String email) {
+    return userRepository.existsByEmail(email);
+  }
+
   @Transactional
   public User addUser(UserDto userDto) {
     return userRepository.save(userDto.toEntity());

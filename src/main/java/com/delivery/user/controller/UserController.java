@@ -8,6 +8,7 @@ import java.net.URISyntaxException;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +31,13 @@ public class UserController {
    * @return ResponseEntity(성공시 201 code, 실패시 400 code)
    */
   @PostMapping()
-  public ResponseEntity<Void> signUp(@RequestBody @Valid UserDto userDto) throws URISyntaxException {
+  public ResponseEntity<?> signUp(@RequestBody @Valid UserDto userDto) throws URISyntaxException {
+    boolean existsUser = userService.existsByEmail(userDto.getEmail());
+
+    if (existsUser) {
+      return ResponseEntity.status(HttpStatus.CONFLICT).build();
+    }
+
     User user = userService.addUser(userDto);
 
     return ResponseEntity.created(new URI("/users/" + user.getId())).build();

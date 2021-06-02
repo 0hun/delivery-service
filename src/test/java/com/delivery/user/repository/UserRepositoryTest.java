@@ -81,4 +81,51 @@ public class UserRepositoryTest {
     assertThat(savedUser.get()).isEqualTo(mockUser);
   }
 
+  @DisplayName("user 조회 실패 테스트")
+  @Test
+  void findUserFail() {
+    //given
+    long userId = 1L;
+
+    //when
+    Optional<User> savedUser = userRepository.findById(userId);
+
+    //then
+    assertThat(savedUser).isEqualTo(Optional.empty());
+  }
+
+  @DisplayName("user 존재 여부 테스트")
+  @Test
+  void existsUser() {
+    //given
+    UserDto userDto = UserDto.builder()
+        .email("whdudgns2654@naver.com")
+        .name("조영훈")
+        .password("asdqwe1234567!@#")
+        .phoneNumber("010-1234-1234")
+        .status(DataStatus.DEFAULT)
+        .build();
+
+    //when
+    userRepository.save(userDto.toEntity());
+
+    boolean existsUser = userRepository.existsByEmail(userDto.getEmail());
+
+    //then
+    assertThat(existsUser).isEqualTo(true);
+  }
+
+  @DisplayName("user 존재 여부 실패 테스트")
+  @Test
+  void existsUserFail() {
+    //given
+    String email = "whdudgns2654@naver.com";
+
+    //when
+    boolean existsUser = userRepository.existsByEmail(email);
+
+    //then
+    assertThat(existsUser).isEqualTo(false);
+  }
+
 }

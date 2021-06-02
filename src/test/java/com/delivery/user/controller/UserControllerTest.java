@@ -91,7 +91,33 @@ public class UserControllerTest {
         .content(new Gson().toJson(userDto))
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON))
-        .andExpect(status().is4xxClientError())
+        .andExpect(status().isBadRequest())
+        .andDo(print());
+  }
+
+  @DisplayName("회원 가입 실패 테스트 - 같은 이메일을 가진 유저가 존재하여 실패 테스트")
+  @Test
+  void signUpFailWithExistsUser() throws Exception {
+    // given
+    UserDto userDto = UserDto.builder()
+        .email("whdudgns2654@naver.com")
+        .name("조영훈")
+        .password("asdqwe1234567!@#")
+        .phoneNumber("010-1234-1234")
+        .status(DataStatus.DEFAULT)
+        .build();
+
+    String email = "whdudgns2654@naver.com";
+
+    // when
+    doReturn(true).when(userService).existsByEmail(email);
+
+    // then
+    mockMvc.perform(post("/users")
+        .content(new Gson().toJson(userDto))
+        .contentType(MediaType.APPLICATION_JSON)
+        .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isConflict())
         .andDo(print());
   }
 
