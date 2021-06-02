@@ -33,4 +33,11 @@ public class StoreService {
         store.updateInformation(storeRequest);
         return new StoreResponseDto(store);
     }
+
+    @Transactional
+    public void deleteStore(Long storeId) {
+        StoreEntity store = storeRepository.findById(storeId)
+            .orElseThrow(() -> new IllegalStateException("해당 storeId가 존재하지 않습니다. storeId : " + storeId));
+        store.disableStore();
+    }
 }
