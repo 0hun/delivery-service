@@ -39,7 +39,7 @@ public class UserController {
       return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 
-    User user = userService.addUser(userDto);
+    User user = userService.add(userDto);
 
     return ResponseEntity.created(new URI("/users/" + user.getId())).build();
   }
@@ -47,11 +47,11 @@ public class UserController {
   /**
    * 회원 조회 메소드 회원 조회 성공시 200(ok) and User return
    * @param id 회원 아이디
-   * @return ResponseEntity(성공시 202 code, 실패시 NoSuchElementException)
+   * @return ResponseEntity(성공시 200 code, 실패시 NoSuchElementException)
    */
   @GetMapping("/{id}")
   public ResponseEntity<?> findUser(@PathVariable long id) {
-    User user = userService.findById(id);
+    User user = userService.find(id);
 
     return ResponseEntity.ok(user);
   }

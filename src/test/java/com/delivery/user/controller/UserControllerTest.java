@@ -3,6 +3,7 @@ package com.delivery.user.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -67,7 +68,7 @@ public class UserControllerTest {
         .status(DataStatus.DEFAULT)
         .build();
 
-    doReturn(user).when(userService).addUser(any());
+    doReturn(user).when(userService).add(any());
 
     // when
     // then
@@ -135,7 +136,7 @@ public class UserControllerTest {
         .status(DataStatus.DEFAULT)
         .build();
 
-    doReturn(user).when(userService).findById(1L);
+    doReturn(user).when(userService).find(1L);
 
     // when
     // then
@@ -153,7 +154,7 @@ public class UserControllerTest {
     long userId = 1L;
 
     // when
-    doThrow(NoSuchElementException.class).when(userService).findById(userId);
+    doThrow(NoSuchElementException.class).when(userService).find(userId);
 
     // then
     Throwable thrown = catchThrowable(() -> mockMvc.perform(get("/users/" + userId)
@@ -175,7 +176,7 @@ public class UserControllerTest {
         .status(DataStatus.DEFAULT)
         .build();
 
-    doReturn(user).when(userService).delete(1L);
+    doNothing().when(userService).delete(1L);
 
     // when
     // then

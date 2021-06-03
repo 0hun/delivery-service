@@ -44,7 +44,7 @@ public class UserServiceTest {
     doReturn(Optional.of(mockUser)).when(userRepository).findById(mockUser.getId());
 
     //when
-    User savedUser = userService.findById(mockUser.getId());
+    User savedUser = userService.find(mockUser.getId());
 
     //then
     assertThat(savedUser).isEqualTo(mockUser);
@@ -59,7 +59,7 @@ public class UserServiceTest {
     doReturn(Optional.empty()).when(userRepository).findById(userId);
 
     //when
-    Throwable thrown = catchThrowable(() -> userService.findById(userId));
+    Throwable thrown = catchThrowable(() -> userService.find(userId));
 
     //then
     assertThat(thrown).isInstanceOf(NoSuchElementException.class);
@@ -89,7 +89,7 @@ public class UserServiceTest {
     doReturn(mockUser).when(userRepository).save(any());
 
     //when
-    User savedUser = userService.addUser(userDto);
+    User savedUser = userService.add(userDto);
 
     //then
     assertThat(savedUser).isEqualTo(mockUser);
@@ -141,10 +141,12 @@ public class UserServiceTest {
     doReturn(Optional.of(mockUser)).when(userRepository).findById(mockUser.getId());
 
     //when
-    User deletedUser = userService.delete(1L);
+    userService.delete(mockUser.getId());
+
+    User savedUser = userService.find(mockUser.getId());
 
     //then
-    assertThat(deletedUser.getStatus()).isEqualTo(DataStatus.DELETED);
+    assertThat(savedUser.getStatus()).isEqualTo(DataStatus.DELETED);
   }
 
   @DisplayName("user 삭제 실패 테스트")

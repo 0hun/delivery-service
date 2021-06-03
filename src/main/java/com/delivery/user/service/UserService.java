@@ -14,7 +14,7 @@ public class UserService {
 
   private final UserRepository userRepository;
 
-  public User findById(long id) {
+  public User find(long id) {
     return userRepository.findById(id)
         .orElseThrow(NoSuchElementException::new);
   }
@@ -24,17 +24,15 @@ public class UserService {
   }
 
   @Transactional
-  public User addUser(UserDto userDto) {
+  public User add(UserDto userDto) {
     return userRepository.save(userDto.toEntity());
   }
 
   @Transactional
-  public User delete(long id) {
+  public void delete(long id) {
     User savedUser = userRepository.findById(id)
         .orElseThrow(NoSuchElementException::new);
 
     savedUser.delete();
-
-    return savedUser;
   }
 }

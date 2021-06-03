@@ -32,10 +32,12 @@ public class UserRepositoryTest {
         .build();
 
     //when
-    User user = userRepository.save(userDto.toEntity());
+    userRepository.save(userDto.toEntity());
+
+    User savedUser = userRepository.findByEmail(userDto.getEmail());
 
     //then
-    assertThat(user.getEmail()).isEqualTo(userDto.getEmail());
+    assertThat(savedUser.getEmail()).isEqualTo(userDto.getEmail());
   }
 
   @DisplayName("비어 있는 user 객체 저장 테스트")
@@ -55,15 +57,6 @@ public class UserRepositoryTest {
   @Test
   void findUser() {
     //given
-    User mockUser = User.builder()
-        .id(1L)
-        .email("whdudgns2654@naver.com")
-        .name("조영훈")
-        .password("asdqwe1234567!@#")
-        .phoneNumber("010-1234-1234")
-        .status(DataStatus.DEFAULT)
-        .build();
-
     UserDto userDto = UserDto.builder()
         .email("whdudgns2654@naver.com")
         .name("조영훈")
@@ -73,12 +66,12 @@ public class UserRepositoryTest {
         .build();
 
     //when
-    userRepository.save(userDto.toEntity());
+    User user = userRepository.save(userDto.toEntity());
 
-    Optional<User> savedUser = userRepository.findById(1L);
+    User savedUser = userRepository.findByEmail(userDto.getEmail());
 
     //then
-    assertThat(savedUser.get()).isEqualTo(mockUser);
+    assertThat(savedUser).isEqualTo(user);
   }
 
   @DisplayName("user 조회 실패 테스트")
@@ -143,12 +136,25 @@ public class UserRepositoryTest {
     userRepository.save(userDto.toEntity());
 
     //when
-    Optional<User> savedUser = userRepository.findById(1L);
+    User savedUser = userRepository.findByEmail(userDto.getEmail());
 
-    savedUser.get().delete();
+    savedUser.delete();
 
     //then
-    assertThat(savedUser.get().getStatus()).isEqualTo(DataStatus.DELETED);
+    assertThat(savedUser.getStatus()).isEqualTo(DataStatus.DELETED);
+  }
+
+  @DisplayName("user 삭제 실패 테스트")
+  @Test
+  void deleteUserFail() {
+    //given
+    long userId = 1L;
+
+    //when
+    Optional<User> savedUser = userRepository.findById(userId);
+
+    //then
+    assertThat(savedUser).isEqualTo(Optional.empty());
   }
 
 }
