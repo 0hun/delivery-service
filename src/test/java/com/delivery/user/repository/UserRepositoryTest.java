@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.delivery.user.domain.DataStatus;
 import com.delivery.user.domain.User;
 import com.delivery.user.dto.UserDto;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class UserRepositoryTest {
   @Autowired
   UserRepository userRepository;
 
-  @DisplayName("user 객체를 저장 테스트")
+  @DisplayName("user 객체 저장 테스트")
   @Test
   void saveUser() {
     //given
@@ -37,7 +38,7 @@ public class UserRepositoryTest {
     assertThat(user.getEmail()).isEqualTo(userDto.getEmail());
   }
 
-  @DisplayName("비어 있는 user 객체를 저장 테스트")
+  @DisplayName("비어 있는 user 객체 저장 테스트")
   @Test
   void saveEmptyUser() {
     //given
@@ -48,6 +49,36 @@ public class UserRepositoryTest {
 
     //then
     assertThat(savedUser.getEmail()).isNull();
+  }
+
+  @DisplayName("user 조회 테스트")
+  @Test
+  void findUser() {
+    //given
+    User mockUser = User.builder()
+        .id(1L)
+        .email("whdudgns2654@naver.com")
+        .name("조영훈")
+        .password("asdqwe1234567!@#")
+        .phoneNumber("010-1234-1234")
+        .status(DataStatus.DEFAULT)
+        .build();
+
+    UserDto userDto = UserDto.builder()
+        .email("whdudgns2654@naver.com")
+        .name("조영훈")
+        .password("asdqwe1234567!@#")
+        .phoneNumber("010-1234-1234")
+        .status(DataStatus.DEFAULT)
+        .build();
+
+    //when
+    userRepository.save(userDto.toEntity());
+
+    Optional<User> savedUser = userRepository.findById(1L);
+
+    //then
+    assertThat(savedUser.get()).isEqualTo(mockUser);
   }
 
 }
