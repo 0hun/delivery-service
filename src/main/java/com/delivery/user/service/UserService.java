@@ -19,9 +19,22 @@ public class UserService {
         .orElseThrow(NoSuchElementException::new);
   }
 
+  public boolean existsByEmail(String email) {
+    return userRepository.existsByEmail(email);
+  }
+
   @Transactional
   public User addUser(UserDto userDto) {
     return userRepository.save(userDto.toEntity());
   }
 
+  @Transactional
+  public User delete(long id) {
+    User savedUser = userRepository.findById(id)
+        .orElseThrow(NoSuchElementException::new);
+
+    savedUser.delete();
+
+    return savedUser;
+  }
 }
