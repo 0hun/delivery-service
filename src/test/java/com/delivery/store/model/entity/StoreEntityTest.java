@@ -2,13 +2,21 @@ package com.delivery.store.model.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.LocalDateTime;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.delivery.store.model.request.StoreRequestDto;
+
 class StoreEntityTest {
+
+    @DisplayName("StoreEntity 기본생성자")
+    @Test
+    void store_default_생성자() {
+        StoreEntity storeEntity = new StoreEntity();
+
+        assertThat(storeEntity.getName()).isEqualTo(null);
+    }
 
     @DisplayName("StoreEntity 매핑")
     @Test
@@ -19,8 +27,6 @@ class StoreEntityTest {
             .address("서울 송파구 송파1로 27")
             .managerName("황윤호")
             .businessNumber("123123933")
-            .createdAt(LocalDateTime.now())
-            .updatedAt(LocalDateTime.now())
             .build();
 
         String name = store.getName();
@@ -35,6 +41,36 @@ class StoreEntityTest {
             () -> assertThat(address).isEqualTo("서울 송파구 송파1로 27"),
             () -> assertThat(managerName).isEqualTo("황윤호"),
             () -> assertThat(businessNumber).isEqualTo("123123933")
+        );
+    }
+
+    @DisplayName("StoreEntity 업데이트")
+    @Test
+    void store_엔티티_수정() {
+        StoreEntity store = StoreEntity.builder()
+            .name("곱돌이네")
+            .telephone("02-1234-5678")
+            .address("서울 송파구 송파1로 27")
+            .managerName("황윤호")
+            .businessNumber("123123933")
+            .build();
+
+        StoreRequestDto storeRequestDto = StoreRequestDto.builder()
+            .name("윤호네")
+            .telephone("010-1234-5678")
+            .address("서울 송파구 송파1로 52")
+            .managerName("mane")
+            .businessNumber("123123933")
+            .build();
+
+        store.updateInformation(storeRequestDto);
+
+        Assertions.assertAll(
+            () -> assertThat(store.getName()).isEqualTo(storeRequestDto.getName()),
+            () -> assertThat(store.getTelephone()).isEqualTo(storeRequestDto.getTelephone()),
+            () -> assertThat(store.getAddress()).isEqualTo(storeRequestDto.getAddress()),
+            () -> assertThat(store.getManagerName()).isEqualTo(storeRequestDto.getManagerName()),
+            () -> assertThat(store.getBusinessNumber()).isEqualTo(storeRequestDto.getBusinessNumber())
         );
     }
 }

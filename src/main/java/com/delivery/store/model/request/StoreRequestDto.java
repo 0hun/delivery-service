@@ -3,6 +3,7 @@ package com.delivery.store.model.request;
 import com.delivery.store.model.entity.StoreEntity;
 import lombok.*;
 
+@Getter
 @EqualsAndHashCode
 public class StoreRequestDto {
 

@@ -14,19 +14,25 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 @RestController
+@RequestMapping("/stores")
 @RequiredArgsConstructor
 public class StoreController {
 
     private final StoreService storeService;
 
-    @GetMapping("/store/{storeId}")
+    @GetMapping("/{storeId}")
     public StoreResponseDto findStore(@PathVariable Long storeId) {
         return storeService.findStore(storeId);
     }
 
-    @PostMapping("/store")
-    public ResponseEntity<?> createStore(@RequestBody  StoreRequestDto storeRequest) throws URISyntaxException {
+    @PostMapping
+    public ResponseEntity<?> createStore(@RequestBody StoreRequestDto storeRequest) throws URISyntaxException {
         StoreEntity store = storeService.createStore(storeRequest);
-        return ResponseEntity.created(new URI("/store/" + store.getId())).body("{}");
+        return ResponseEntity.created(new URI("/stores/" + store.getId())).body("{}");
+    }
+
+    @PutMapping("/{storeId}")
+    public StoreResponseDto updateStore(@PathVariable Long storeId, @RequestBody StoreRequestDto storeRequest) throws URISyntaxException {
+        return storeService.updateStore(storeId, storeRequest);
     }
 }
