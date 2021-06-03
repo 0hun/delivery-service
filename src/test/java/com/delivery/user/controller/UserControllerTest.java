@@ -5,6 +5,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -91,7 +92,33 @@ public class UserControllerTest {
         .content(new Gson().toJson(userDto))
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON))
-        .andExpect(status().is4xxClientError())
+        .andExpect(status().isBadRequest())
+        .andDo(print());
+  }
+
+  @DisplayName("회원 가입 실패 테스트 - 같은 이메일을 가진 유저가 존재하여 실패 테스트")
+  @Test
+  void signUpFailWithExistsUser() throws Exception {
+    // given
+    UserDto userDto = UserDto.builder()
+        .email("whdudgns2654@naver.com")
+        .name("조영훈")
+        .password("asdqwe1234567!@#")
+        .phoneNumber("010-1234-1234")
+        .status(DataStatus.DEFAULT)
+        .build();
+
+    String email = "whdudgns2654@naver.com";
+
+    // when
+    doReturn(true).when(userService).existsByEmail(email);
+
+    // then
+    mockMvc.perform(post("/users")
+        .content(new Gson().toJson(userDto))
+        .contentType(MediaType.APPLICATION_JSON)
+        .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isConflict())
         .andDo(print());
   }
 
@@ -130,6 +157,45 @@ public class UserControllerTest {
 
     // then
     Throwable thrown = catchThrowable(() -> mockMvc.perform(get("/users/" + userId)
+        .accept(MediaType.APPLICATION_JSON)));
+
+    assertThat(thrown.getCause()).isInstanceOf(NoSuchElementException.class);
+  }
+
+  @DisplayName("회원 삭제 성공 테스트")
+  @Test
+  void deleteUser() throws Exception {
+    // given
+    User user = User.builder()
+        .id(1L)
+        .email("whdudgns2654@naver.com")
+        .name("조영훈")
+        .password("asdqwe1234567!@#")
+        .phoneNumber("010-1234-1234")
+        .status(DataStatus.DEFAULT)
+        .build();
+
+    doReturn(user).when(userService).delete(1L);
+
+    // when
+    // then
+    mockMvc.perform(delete("/users/" + 1L)
+        .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNoContent())
+        .andDo(print());
+  }
+
+  @DisplayName("회원 삭제 실패 테스트")
+  @Test
+  void deleteUserFail() {
+    // given
+    long userId = 1L;
+
+    // when
+    doThrow(NoSuchElementException.class).when(userService).delete(userId);
+
+    // then
+    Throwable thrown = catchThrowable(() -> mockMvc.perform(delete("/users/" + userId)
         .accept(MediaType.APPLICATION_JSON)));
 
     assertThat(thrown.getCause()).isInstanceOf(NoSuchElementException.class);

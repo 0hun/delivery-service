@@ -8,7 +8,9 @@ import java.net.URISyntaxException;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +32,13 @@ public class UserController {
    * @return ResponseEntity(성공시 201 code, 실패시 400 code)
    */
   @PostMapping()
-  public ResponseEntity<Void> signUp(@RequestBody @Valid UserDto userDto) throws URISyntaxException {
+  public ResponseEntity<?> signUp(@RequestBody @Valid UserDto userDto) throws URISyntaxException {
+    boolean existsUser = userService.existsByEmail(userDto.getEmail());
+
+    if (existsUser) {
+      return ResponseEntity.status(HttpStatus.CONFLICT).build();
+    }
+
     User user = userService.addUser(userDto);
 
     return ResponseEntity.created(new URI("/users/" + user.getId())).build();
@@ -46,6 +54,18 @@ public class UserController {
     User user = userService.findById(id);
 
     return ResponseEntity.ok(user);
+  }
+
+  /**
+   * 회원 조회 메소드 회원 삭제 성공시 204
+   * @param id 회원 아이디
+   * @return ResponseEntity(성공시 204 code, 실패시 NoSuchElementException)
+   */
+  @DeleteMapping("/{id}")
+  public ResponseEntity<?> deleteUser(@PathVariable long id) {
+    userService.delete(id);
+
+    return ResponseEntity.noContent().build();
   }
 
 }
