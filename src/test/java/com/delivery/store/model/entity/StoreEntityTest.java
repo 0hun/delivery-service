@@ -1,4 +1,4 @@
-package com.delivery.store.entity;
+package com.delivery.store.model.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 class StoreEntityTest {
 
-    @DisplayName("StoreEntity Builder 매핑")
+    @DisplayName("StoreEntity 매핑")
     @Test
     void store_엔티티_매핑() {
         StoreEntity store = StoreEntity.builder()
