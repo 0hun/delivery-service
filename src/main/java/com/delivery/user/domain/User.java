@@ -14,7 +14,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Table(name = "User")
+@Table(name = "user")
 @Entity
 public class User {
 
@@ -68,6 +68,10 @@ public class User {
     this.updatedAt = updatedAt;
   }
 
+  public void delete() {
+    this.status = DataStatus.DELETED;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -89,7 +93,4 @@ public class User {
     return Objects.hash(id, email, password, name, phoneNumber, status, createdAt, updatedAt);
   }
 
-  public void delete() {
-    this.status = DataStatus.DELETED;
-  }
 }
