@@ -30,12 +30,13 @@ public class StoreController {
     @PostMapping
     public ResponseEntity<?> createStore(@RequestBody StoreRequestDto storeRequest) throws URISyntaxException {
         StoreEntity store = storeService.createStore(storeRequest);
-        return ResponseEntity.created(new URI("/stores/" + store.getId())).body("{}");
+        return ResponseEntity.created(new URI("/stores/" + store.getId())).build();
     }
 
     @PutMapping("/{storeId}")
-    public StoreResponseDto updateStore(@PathVariable Long storeId, @RequestBody StoreRequestDto storeRequest) {
-        return storeService.updateStore(storeId, storeRequest);
+    public ResponseEntity<?> updateStore(@PathVariable Long storeId, @RequestBody StoreRequestDto storeRequest) {
+        storeService.updateStore(storeId, storeRequest);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/{storeId}")

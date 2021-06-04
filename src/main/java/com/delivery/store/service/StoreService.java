@@ -4,7 +4,9 @@ import com.delivery.store.model.entity.StoreEntity;
 import com.delivery.store.model.repository.StoreRepository;
 import com.delivery.store.model.request.StoreRequestDto;
 import com.delivery.store.model.response.StoreResponseDto;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,12 +28,11 @@ public class StoreService {
 
 
     @Transactional
-    public StoreResponseDto updateStore(Long storeId, StoreRequestDto storeRequest) {
+    public void updateStore(Long storeId, StoreRequestDto storeRequest) {
         StoreEntity store = storeRepository.findById(storeId)
             .orElseThrow(() -> new IllegalStateException("해당 storeId가 존재하지 않습니다. storeId : " + storeId));
 
         store.updateInformation(storeRequest);
-        return new StoreResponseDto(store);
     }
 
     @Transactional
