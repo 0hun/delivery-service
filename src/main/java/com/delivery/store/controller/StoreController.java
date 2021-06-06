@@ -23,25 +23,25 @@ public class StoreController {
     private final StoreService storeService;
 
     @GetMapping("/{storeId}")
-    public StoreResponseDto findStore(@PathVariable Long storeId) {
-        return storeService.findStore(storeId);
+    public StoreResponseDto find(@PathVariable Long storeId) {
+        return storeService.find(storeId);
     }
 
     @PostMapping
-    public ResponseEntity<?> createStore(@RequestBody StoreRequestDto storeRequest) throws URISyntaxException {
-        StoreEntity store = storeService.createStore(storeRequest);
+    public ResponseEntity<?> create(@RequestBody StoreRequestDto storeRequest) throws URISyntaxException {
+        StoreEntity store = storeService.create(storeRequest);
         return ResponseEntity.created(new URI("/stores/" + store.getId())).build();
     }
 
     @PutMapping("/{storeId}")
-    public ResponseEntity<?> updateStore(@PathVariable Long storeId, @RequestBody StoreRequestDto storeRequest) {
-        storeService.updateStore(storeId, storeRequest);
+    public ResponseEntity<?> update(@PathVariable Long storeId, @RequestBody StoreRequestDto storeRequest) {
+        storeService.update(storeId, storeRequest);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/{storeId}")
-    public ResponseEntity<?> deleteStore(@PathVariable Long storeId) {
-        storeService.deleteStore(storeId);
+    public ResponseEntity<?> delete(@PathVariable Long storeId) {
+        storeService.delete(storeId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

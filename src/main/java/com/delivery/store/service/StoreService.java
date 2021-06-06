@@ -16,19 +16,19 @@ public class StoreService {
 
     private final StoreRepository storeRepository;
 
-    public StoreResponseDto findStore(Long storeId) {
+    public StoreResponseDto find(Long storeId) {
         StoreEntity store = storeRepository.findById(storeId)
             .orElseThrow(() -> new IllegalStateException("해당 storeId가 존재하지 않습니다. storeId : " + storeId));
         return new StoreResponseDto(store);
     }
 
-    public StoreEntity createStore(StoreRequestDto store) {
+    public StoreEntity create(StoreRequestDto store) {
         return storeRepository.save(store.toEntity());
     }
 
 
     @Transactional
-    public void updateStore(Long storeId, StoreRequestDto storeRequest) {
+    public void update(Long storeId, StoreRequestDto storeRequest) {
         StoreEntity store = storeRepository.findById(storeId)
             .orElseThrow(() -> new IllegalStateException("해당 storeId가 존재하지 않습니다. storeId : " + storeId));
 
@@ -36,7 +36,7 @@ public class StoreService {
     }
 
     @Transactional
-    public void deleteStore(Long storeId) {
+    public void delete(Long storeId) {
         StoreEntity store = storeRepository.findById(storeId)
             .orElseThrow(() -> new IllegalStateException("해당 storeId가 존재하지 않습니다. storeId : " + storeId));
         store.disableStore();
