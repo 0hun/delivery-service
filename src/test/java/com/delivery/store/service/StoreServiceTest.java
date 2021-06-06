@@ -7,11 +7,12 @@ import static org.mockito.BDDMockito.then;
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.delivery.store.model.StoreEnableStatus;
 import com.delivery.store.model.entity.StoreEntity;
@@ -19,22 +20,18 @@ import com.delivery.store.model.repository.StoreRepository;
 import com.delivery.store.model.request.StoreRequestDto;
 import com.delivery.store.model.response.StoreResponseDto;
 
+@ExtendWith(MockitoExtension.class)
 class StoreServiceTest {
 
+    @InjectMocks
     private StoreService storeService;
 
     @Mock
     private StoreRepository storeRepository;
 
-    @BeforeEach
-    public void initMock() {
-        MockitoAnnotations.openMocks(this);
-        storeService = new StoreService(storeRepository);
-    }
-
     @DisplayName("store_단건_조회")
     @Test
-    void findStore() {
+    void find() {
         // given
         StoreEntity storeEntity = StoreEntity.builder()
             .id(1L)
@@ -48,7 +45,7 @@ class StoreServiceTest {
         given(storeRepository.findById(1L)).willReturn(Optional.of(storeEntity));
 
         // when
-        StoreResponseDto store = storeService.findStore(1L);
+        StoreResponseDto store = storeService.find(1L);
 
         // then
         assertThat(storeEntity.getName()).isEqualTo(store.getName());
@@ -56,7 +53,7 @@ class StoreServiceTest {
 
     @DisplayName("store_단건_생성")
     @Test
-    void creareStore() {
+    void create() {
         // given
         StoreRequestDto storeRequest = StoreRequestDto.builder()
             .name("곱돌이네")
@@ -67,7 +64,7 @@ class StoreServiceTest {
             .build();
 
         // when
-        storeService.createStore(storeRequest);
+        storeService.create(storeRequest);
 
         // then
         then(storeRepository).should().save(any());
@@ -75,7 +72,7 @@ class StoreServiceTest {
 
     @DisplayName("store_단건_수정")
     @Test
-    void updateStore() {
+    void update() {
         // given
         StoreRequestDto storeRequest = StoreRequestDto.builder()
             .name("윤호네곱창집")
@@ -97,7 +94,7 @@ class StoreServiceTest {
         given(storeRepository.findById(1L)).willReturn(Optional.of(store));
 
         // when
-        storeService.updateStore(1L, storeRequest);
+        storeService.update(1L, storeRequest);
 
         // then
         assertThat(store.getName()).isEqualTo(storeRequest.getName());
@@ -105,7 +102,7 @@ class StoreServiceTest {
 
     @DisplayName("store_단건_비활성화")
     @Test
-    void deleteStore() {
+    void delete() {
         // given
         StoreEntity store = StoreEntity.builder()
             .id(1L)
@@ -119,7 +116,7 @@ class StoreServiceTest {
         given(storeRepository.findById(1L)).willReturn(Optional.of(store));
 
         // when
-        storeService.deleteStore(1L);
+        storeService.delete(1L);
 
         // then
         assertThat(store.getStoreEnableStatus()).isEqualTo(StoreEnableStatus.DISABLED);

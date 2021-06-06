@@ -36,7 +36,7 @@ class StoreControllerTest {
 
     @DisplayName("store_단건_조회")
     @Test
-    void findStore() throws Exception {
+    void find() throws Exception {
         // given
         StoreResponseDto store = new StoreResponseDto(StoreEntity.builder()
             .id(1L)
@@ -47,7 +47,7 @@ class StoreControllerTest {
             .businessNumber("123123933")
             .build());
 
-        given(storeService.findStore(1L)).willReturn(store);
+        given(storeService.find(1L)).willReturn(store);
 
         // when, then
         String url = "/stores/1";
@@ -59,7 +59,7 @@ class StoreControllerTest {
 
     @DisplayName("store_단건_생성")
     @Test
-    void createStore() throws Exception {
+    void create() throws Exception {
         // given
         StoreRequestDto storeRequest = StoreRequestDto.builder()
             .name("곱돌이네")
@@ -79,7 +79,7 @@ class StoreControllerTest {
             .storeEnableStatus(StoreEnableStatus.ENABLED)
             .build();
 
-        given(storeService.createStore(storeRequest)).willReturn(store);
+        given(storeService.create(storeRequest)).willReturn(store);
 
         // when, then
         String url = "/stores";
@@ -89,12 +89,12 @@ class StoreControllerTest {
             .andExpect(header().string("location", "/stores/1"))
             .andExpect(status().isCreated());
 
-        then(storeService).should().createStore(eq(storeRequest));
+        then(storeService).should().create(eq(storeRequest));
     }
 
     @DisplayName("store_단건_수정")
     @Test
-    void updateStore() throws Exception {
+    void update() throws Exception {
         // given
         StoreRequestDto storeRequest = StoreRequestDto.builder()
             .name("곱돌이네")
@@ -104,7 +104,7 @@ class StoreControllerTest {
             .businessNumber("123123933")
             .build();
 
-        willDoNothing().given(storeService).updateStore(1L, storeRequest);
+        willDoNothing().given(storeService).update(1L, storeRequest);
 
         // when, then
         String url = "/stores/1";
@@ -113,20 +113,20 @@ class StoreControllerTest {
             .content(new Gson().toJson(storeRequest)))
             .andExpect(status().isOk());
 
-        then(storeService).should().updateStore(eq(1L), eq(storeRequest));
+        then(storeService).should().update(eq(1L), eq(storeRequest));
     }
 
     @DisplayName("store_단건_비활성화")
     @Test
-    void deleteStore() throws Exception {
+    void delete() throws Exception {
         // given
-        willDoNothing().given(storeService).deleteStore(1L);
+        willDoNothing().given(storeService).delete(1L);
 
         // when, then
         String url = "/stores/1";
         mockMvc.perform(MockMvcRequestBuilders.delete(url)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
-        then(storeService).should().deleteStore(eq(1L));
+        then(storeService).should().delete(eq(1L));
     }
 }
