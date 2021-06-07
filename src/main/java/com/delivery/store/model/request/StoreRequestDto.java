@@ -1,6 +1,7 @@
 package com.delivery.store.model.request;
 
 import com.delivery.store.model.entity.StoreEntity;
+
 import lombok.*;
 
 @Getter
@@ -22,13 +23,13 @@ public class StoreRequestDto {
         this.businessNumber = businessNumber;
     }
 
-    public StoreEntity toEntity(){
+    public StoreEntity toEntity() {
         return StoreEntity.builder()
-                .name(name)
-                .telephone(telephone)
-                .address(address)
-                .managerName(managerName)
-                .businessNumber(businessNumber)
-                .build();
+            .name(name)
+            .telephone(telephone)
+            .address(address)
+            .managerName(managerName)
+            .businessNumber(businessNumber)
+            .build();
     }
 }

@@ -22,6 +22,7 @@ class StoreEntityTest {
     @DisplayName("StoreEntity 매핑")
     @Test
     void store_엔티티_매핑() {
+        // given
         StoreEntity store = StoreEntity.builder()
             .name("곱돌이네")
             .telephone("02-1234-5678")
@@ -31,6 +32,7 @@ class StoreEntityTest {
             .storeEnableStatus(StoreEnableStatus.ENABLED)
             .build();
 
+        // when
         String name = store.getName();
         String telephone = store.getTelephone();
         String address = store.getAddress();
@@ -38,6 +40,7 @@ class StoreEntityTest {
         String businessNumber = store.getBusinessNumber();
         StoreEnableStatus storeEnableStatus = store.getStoreEnableStatus();
 
+        // then
         Assertions.assertAll(
             () -> assertThat(name).isEqualTo("곱돌이네"),
             () -> assertThat(telephone).isEqualTo("02-1234-5678"),
@@ -51,6 +54,7 @@ class StoreEntityTest {
     @DisplayName("StoreEntity 업데이트")
     @Test
     void store_엔티티_수정() {
+        // given
         StoreEntity store = StoreEntity.builder()
             .name("곱돌이네")
             .telephone("02-1234-5678")
@@ -67,8 +71,10 @@ class StoreEntityTest {
             .businessNumber("123123933")
             .build();
 
+        // when
         store.updateInformation(storeRequestDto);
 
+        // then
         Assertions.assertAll(
             () -> assertThat(store.getName()).isEqualTo(storeRequestDto.getName()),
             () -> assertThat(store.getTelephone()).isEqualTo(storeRequestDto.getTelephone()),
@@ -81,12 +87,16 @@ class StoreEntityTest {
     @DisplayName("StoreEntity 비활성화")
     @Test
     void store_엔티티_비활성화() {
+        // given
         StoreEntity store = StoreEntity.builder()
             .name("곱돌이네")
             .storeEnableStatus(StoreEnableStatus.ENABLED)
             .build();
 
+        // when
         store.disableStore();
+
+        // then
         assertThat(store.getStoreEnableStatus()).isEqualTo(StoreEnableStatus.DISABLED);
     }
 }
