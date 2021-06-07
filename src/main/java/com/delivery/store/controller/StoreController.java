@@ -1,19 +1,24 @@
 package com.delivery.store.controller;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.delivery.store.model.entity.StoreEntity;
 import com.delivery.store.model.request.StoreRequestDto;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import com.delivery.store.model.response.StoreResponseDto;
 import com.delivery.store.service.StoreService;
 
 import lombok.RequiredArgsConstructor;
-
-import java.net.URI;
-import java.net.URISyntaxException;
 
 @RestController
 @RequestMapping("/stores")
@@ -23,7 +28,7 @@ public class StoreController {
     private final StoreService storeService;
 
     @GetMapping("/{storeId}")
-    public StoreResponseDto find(@PathVariable Long storeId) {
+    public StoreResponseDto find(@PathVariable long storeId) {
         return storeService.find(storeId);
     }
 
@@ -34,14 +39,14 @@ public class StoreController {
     }
 
     @PutMapping("/{storeId}")
-    public ResponseEntity<?> update(@PathVariable Long storeId, @RequestBody StoreRequestDto storeRequest) {
+    public ResponseEntity<?> update(@PathVariable long storeId, @RequestBody StoreRequestDto storeRequest) {
         storeService.update(storeId, storeRequest);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{storeId}")
-    public ResponseEntity<?> delete(@PathVariable Long storeId) {
+    public ResponseEntity<?> delete(@PathVariable long storeId) {
         storeService.delete(storeId);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.ok().build();
     }
 }
