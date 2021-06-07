@@ -3,7 +3,7 @@ package com.delivery.user.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.BDDMockito.given;
 
 import com.delivery.user.domain.DataStatus;
 import com.delivery.user.domain.User;
@@ -21,147 +21,199 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
-  @InjectMocks
-  private UserService userService;
+    @InjectMocks
+    private UserService userService;
 
-  @Mock
-  private UserRepository userRepository;
+    @Mock
+    private UserRepository userRepository;
 
-  @DisplayName("user 조회 테스트")
-  @Test
-  void findUser() {
-    //given
-    User mockUser = User.builder()
-        .id(1L)
-        .email("whdudgns2654@naver.com")
-        .name("조영훈")
-        .password("asdqwe1234567!@#")
-        .phoneNumber("010-1234-1234")
-        .status(DataStatus.DEFAULT)
-        .build();
+    @DisplayName("user 조회 테스트")
+    @Test
+    void findUser() {
+        //given
+        User mockUser = User.builder()
+            .id(1L)
+            .email("whdudgns2654@naver.com")
+            .name("조영훈")
+            .password("asdqwe1234567!@#")
+            .phoneNumber("010-1234-1234")
+            .status(DataStatus.DEFAULT)
+            .build();
 
+        given(userRepository.findById(mockUser.getId())).willReturn(Optional.of(mockUser));
 
-    doReturn(Optional.of(mockUser)).when(userRepository).findById(mockUser.getId());
+        //when
+        User savedUser = userService.find(mockUser.getId());
 
-    //when
-    User savedUser = userService.find(mockUser.getId());
+        //then
+        assertThat(savedUser).isEqualTo(mockUser);
+    }
 
-    //then
-    assertThat(savedUser).isEqualTo(mockUser);
-  }
+    @DisplayName("user 조회 실패 테스트")
+    @Test
+    void findUserFail() {
+        //given
+        String email = "whdudgns2654@naver.com";
 
-  @DisplayName("user 조회 실패 테스트")
-  @Test
-  void findUserFail() {
-    //given
-   long userId = 1L;
+        given(userRepository.findByEmail(email)).willReturn(Optional.empty());
 
-    doReturn(Optional.empty()).when(userRepository).findById(userId);
+        //when
+        Throwable thrown = catchThrowable(() -> userService.find(email));
 
-    //when
-    Throwable thrown = catchThrowable(() -> userService.find(userId));
+        //then
+        assertThat(thrown).isInstanceOf(NoSuchElementException.class);
+    }
 
-    //then
-    assertThat(thrown).isInstanceOf(NoSuchElementException.class);
-  }
+    @DisplayName("user 저장 테스트")
+    @Test
+    void addUser() {
+        //given
+        UserDto userDto = UserDto.builder()
+            .email("whdudgns2654@naver.com")
+            .name("조영훈")
+            .password("asdqwe1234567!@#")
+            .phoneNumber("010-1234-1234")
+            .status(DataStatus.DEFAULT)
+            .build();
 
-  @DisplayName("user 저장 테스트")
-  @Test
-  void addUser() {
-    //given
-    UserDto userDto = UserDto.builder()
-        .email("whdudgns2654@naver.com")
-        .name("조영훈")
-        .password("asdqwe1234567!@#")
-        .phoneNumber("010-1234-1234")
-        .status(DataStatus.DEFAULT)
-        .build();
+        User mockUser = User.builder()
+            .id(1L)
+            .email("whdudgns2654@naver.com")
+            .name("조영훈")
+            .password("asdqwe1234567!@#")
+            .phoneNumber("010-1234-1234")
+            .status(DataStatus.DEFAULT)
+            .build();
 
-    User mockUser = User.builder()
-        .id(1L)
-        .email("whdudgns2654@naver.com")
-        .name("조영훈")
-        .password("asdqwe1234567!@#")
-        .phoneNumber("010-1234-1234")
-        .status(DataStatus.DEFAULT)
-        .build();
+        given(userRepository.save(any())).willReturn(mockUser);
 
-    doReturn(mockUser).when(userRepository).save(any());
+        //when
+        User savedUser = userService.add(userDto);
 
-    //when
-    User savedUser = userService.add(userDto);
+        //then
+        assertThat(savedUser).isEqualTo(mockUser);
+    }
 
-    //then
-    assertThat(savedUser).isEqualTo(mockUser);
-  }
+    @DisplayName("user 존재 여부 테스트")
+    @Test
+    void existsUser() {
+        //given
+        String email = "whdudgns2654@naver.com";
 
-  @DisplayName("user 존재 여부 테스트")
-  @Test
-  void existsUser() {
-    //given
-    String email = "whdudgns2654@naver.com";
+        given(userRepository.existsByEmail(email)).willReturn(true);
 
-    doReturn(true).when(userRepository).existsByEmail(email);
+        //when
+        boolean existsUser = userService.existsByEmail(email);
 
-    //when
-    boolean existsUser = userService.existsByEmail(email);
+        //then
+        assertThat(existsUser).isEqualTo(true);
+    }
 
-    //then
-    assertThat(existsUser).isEqualTo(true);
-  }
+    @DisplayName("user 존재 여부 실패 테스트")
+    @Test
+    void existsUserFail() {
+        //given
+        String email = "whdudgns2654@naver.com";
 
-  @DisplayName("user 존재 여부 실패 테스트")
-  @Test
-  void existsUserFail() {
-    //given
-    String email = "whdudgns2654@naver.com";
+        given(userRepository.existsByEmail(email)).willReturn(false);
 
-    doReturn(false).when(userRepository).existsByEmail(email);
+        //when
+        boolean existsUser = userService.existsByEmail(email);
 
-    //when
-    boolean existsUser = userService.existsByEmail(email);
+        //then
+        assertThat(existsUser).isEqualTo(false);
+    }
 
-    //then
-    assertThat(existsUser).isEqualTo(false);
-  }
+    @DisplayName("user 삭제 테스트")
+    @Test
+    void deleteUser() {
+        //given
+        User mockUser = User.builder()
+            .id(1L)
+            .email("whdudgns2654@naver.com")
+            .name("조영훈")
+            .password("asdqwe1234567!@#")
+            .phoneNumber("010-1234-1234")
+            .status(DataStatus.DEFAULT)
+            .build();
 
-  @DisplayName("user 삭제 테스트")
-  @Test
-  void deleteUser() {
-    //given
-    User mockUser = User.builder()
-        .id(1L)
-        .email("whdudgns2654@naver.com")
-        .name("조영훈")
-        .password("asdqwe1234567!@#")
-        .phoneNumber("010-1234-1234")
-        .status(DataStatus.DEFAULT)
-        .build();
+        given(userRepository.findById(mockUser.getId())).willReturn(Optional.of(mockUser));
 
-    doReturn(Optional.of(mockUser)).when(userRepository).findById(mockUser.getId());
+        //when
+        userService.delete(mockUser.getId());
 
-    //when
-    userService.delete(mockUser.getId());
+        User savedUser = userService.find(mockUser.getId());
 
-    User savedUser = userService.find(mockUser.getId());
+        //then
+        assertThat(savedUser.getStatus()).isEqualTo(DataStatus.DELETED);
+    }
 
-    //then
-    assertThat(savedUser.getStatus()).isEqualTo(DataStatus.DELETED);
-  }
+    @DisplayName("user 삭제 실패 테스트")
+    @Test
+    void deleteUserFail() {
+        //given
+        long userId = 1L;
 
-  @DisplayName("user 삭제 실패 테스트")
-  @Test
-  void deleteUserFail() {
-    //given
-    long userId = 1L;
+        given(userRepository.findById(userId)).willReturn(Optional.empty());
 
-    doReturn(Optional.empty()).when(userRepository).findById(userId);
+        //when
+        Throwable thrown = catchThrowable(() -> userService.delete(userId));
 
-    //when
-    Throwable thrown = catchThrowable(() -> userService.delete(userId));
+        //then
+        assertThat(thrown).isInstanceOf(NoSuchElementException.class);
+    }
 
-    //then
-    assertThat(thrown).isInstanceOf(NoSuchElementException.class);
-  }
+    @DisplayName("user update 테스트")
+    @Test
+    void updateUser() {
+        //given
+        User mockUser = User.builder()
+            .id(1L)
+            .email("whdudgns2654@naver.com")
+            .name("조영훈")
+            .password("asdqwe1234567!@#")
+            .phoneNumber("010-1234-1234")
+            .status(DataStatus.DEFAULT)
+            .build();
+
+        UserDto updateUserDto = UserDto.builder()
+            .email("whdudgns2654@naver.com")
+            .name("조영훈11")
+            .password("asdqwe1234568!@#")
+            .phoneNumber("010-1234-1235")
+            .status(DataStatus.DEFAULT)
+            .build();
+
+        given(userRepository.findByEmail(mockUser.getEmail())).willReturn(Optional.of(mockUser));
+
+        //when
+        userService.update(updateUserDto);
+
+        User savedUser = userService.find(mockUser.getEmail());
+
+        //then
+        assertThat(savedUser.getName()).isEqualTo(updateUserDto.getName());
+    }
+
+    @DisplayName("user 삭제 실패 테스트")
+    @Test
+    void updateUserFail() {
+        //given
+        UserDto updateUserDto = UserDto.builder()
+            .email("whdudgns2654@naver.com")
+            .name("조영훈11")
+            .password("asdqwe1234568!@#")
+            .phoneNumber("010-1234-1235")
+            .status(DataStatus.DEFAULT)
+            .build();
+
+        given(userRepository.findByEmail(updateUserDto.getEmail())).willReturn(Optional.empty());
+
+        //when
+        Throwable thrown = catchThrowable(() -> userService.update(updateUserDto));
+
+        //then
+        assertThat(thrown).isInstanceOf(NoSuchElementException.class);
+    }
 
 }

@@ -9,72 +9,72 @@ import org.junit.jupiter.api.Test;
 
 public class UserTest {
 
-  @DisplayName("userDto를 이용하여 user 객체를 생성 테스트")
-  @Test
-  void createUser() {
-    //given
-    UserDto userDto = UserDto.builder()
-        .email("whdudgns2654@naver.com")
-        .name("조영훈")
-        .password("asdqwe1234567!@#")
-        .phoneNumber("010-1234-1234")
-        .status(DataStatus.DEFAULT)
-        .build();
+    @DisplayName("userDto를 이용하여 user 객체를 생성 테스트")
+    @Test
+    void createUser() {
+        //given
+        UserDto userDto = UserDto.builder()
+            .email("whdudgns2654@naver.com")
+            .name("조영훈")
+            .password("asdqwe1234567!@#")
+            .phoneNumber("010-1234-1234")
+            .status(DataStatus.DEFAULT)
+            .build();
 
-    //when
-    User user = userDto.toEntity();
+        //when
+        User user = userDto.toEntity();
 
-    //then
-    assertThat(user.getEmail()).isEqualTo(userDto.getEmail());
-  }
+        //then
+        assertThat(user.getEmail()).isEqualTo(userDto.getEmail());
+    }
 
-  @DisplayName("User Entity 매핑")
-  @Test
-  void userEntityMapping() {
-    //given
-    UserDto userDto = UserDto.builder()
-        .email("whdudgns2654@naver.com")
-        .name("조영훈")
-        .password("asdqwe1234567!@#")
-        .phoneNumber("010-1234-1234")
-        .status(DataStatus.DEFAULT)
-        .build();
+    @DisplayName("User Entity 매핑")
+    @Test
+    void userEntityMapping() {
+        //given
+        UserDto userDto = UserDto.builder()
+            .email("whdudgns2654@naver.com")
+            .name("조영훈")
+            .password("asdqwe1234567!@#")
+            .phoneNumber("010-1234-1234")
+            .status(DataStatus.DEFAULT)
+            .build();
 
-    //when
-    String email = userDto.getEmail();
-    String name = userDto.getName();
-    String password = userDto.getPassword();
-    String phoneNumber = userDto.getPhoneNumber();
-    DataStatus status = userDto.getStatus();
+        //when
+        String email = userDto.getEmail();
+        String name = userDto.getName();
+        String password = userDto.getPassword();
+        String phoneNumber = userDto.getPhoneNumber();
+        DataStatus status = userDto.getStatus();
 
-    //then
-    Assertions.assertAll(
-        () -> assertThat(email).isEqualTo("whdudgns2654@naver.com"),
-        () -> assertThat(name).isEqualTo("조영훈"),
-        () -> assertThat(password).isEqualTo("asdqwe1234567!@#"),
-        () -> assertThat(phoneNumber).isEqualTo("010-1234-1234"),
-        () -> assertThat(status).isEqualTo(DataStatus.DEFAULT)
-    );
-  }
+        //then
+        Assertions.assertAll(
+            () -> assertThat(email).isEqualTo("whdudgns2654@naver.com"),
+            () -> assertThat(name).isEqualTo("조영훈"),
+            () -> assertThat(password).isEqualTo("asdqwe1234567!@#"),
+            () -> assertThat(phoneNumber).isEqualTo("010-1234-1234"),
+            () -> assertThat(status).isEqualTo(DataStatus.DEFAULT)
+        );
+    }
 
-  @DisplayName("User delete 테스트")
-  @Test
-  void userDelete() {
-    //given
-    User mockUser = User.builder()
-        .id(1L)
-        .email("whdudgns2654@naver.com")
-        .name("조영훈")
-        .password("asdqwe1234567!@#")
-        .phoneNumber("010-1234-1234")
-        .status(DataStatus.DEFAULT)
-        .build();
+    @DisplayName("User delete 테스트")
+    @Test
+    void userDelete() {
+        //given
+        User mockUser = User.builder()
+            .id(1L)
+            .email("whdudgns2654@naver.com")
+            .name("조영훈")
+            .password("asdqwe1234567!@#")
+            .phoneNumber("010-1234-1234")
+            .status(DataStatus.DEFAULT)
+            .build();
 
-    //when
-    mockUser.delete();
+        //when
+        mockUser.delete();
 
-    //then
-    assertThat(mockUser.getStatus()).isEqualTo(DataStatus.DELETED);
-  }
+        //then
+        assertThat(mockUser.getStatus()).isEqualTo(DataStatus.DELETED);
+    }
 
 }

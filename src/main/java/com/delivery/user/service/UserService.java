@@ -19,6 +19,11 @@ public class UserService {
         .orElseThrow(NoSuchElementException::new);
   }
 
+  public User find(String email) {
+    return userRepository.findByEmail(email)
+        .orElseThrow(NoSuchElementException::new);
+  }
+
   public boolean existsByEmail(String email) {
     return userRepository.existsByEmail(email);
   }
@@ -34,5 +39,13 @@ public class UserService {
         .orElseThrow(NoSuchElementException::new);
 
     savedUser.delete();
+  }
+
+  @Transactional
+  public void update(UserDto updateUserDto) {
+    User savedUSer = userRepository.findByEmail(updateUserDto.getEmail())
+        .orElseThrow(NoSuchElementException::new);
+
+    savedUSer.update(updateUserDto);
   }
 }

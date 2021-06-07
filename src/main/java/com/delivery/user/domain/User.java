@@ -1,5 +1,6 @@
 package com.delivery.user.domain;
 
+import com.delivery.user.dto.UserDto;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -93,4 +94,10 @@ public class User {
     return Objects.hash(id, email, password, name, phoneNumber, status, createdAt, updatedAt);
   }
 
+  public void update(UserDto updateUserDto) {
+    this.password = updateUserDto.getPassword();
+    this.name = updateUserDto.getName();
+    this.phoneNumber = updateUserDto.getPhoneNumber();
+    this.status = updateUserDto.getStatus();
+  }
 }
