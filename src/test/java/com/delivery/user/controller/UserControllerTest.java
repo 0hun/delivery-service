@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.BDDMockito.willThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -168,7 +168,7 @@ public class UserControllerTest {
         // given
         long userId = 1L;
 
-        doNothing().when(userService).delete(userId);
+        willDoNothing().given(userService).delete(userId);
 
         // when
         // then
@@ -184,7 +184,7 @@ public class UserControllerTest {
         // given
         long userId = 1L;
 
-        doThrow(NoSuchElementException.class).when(userService).delete(userId);
+        willThrow(NoSuchElementException.class).given(userService).delete(userId);
 
         // when
         Throwable thrown = catchThrowable(() -> mockMvc.perform(delete("/users/" + userId)
@@ -206,7 +206,7 @@ public class UserControllerTest {
             .status(DataStatus.DEFAULT)
             .build();
 
-        doNothing().when(userService).update(any());
+        willDoNothing().given(userService).update(any());
 
         // when
         // then
@@ -230,7 +230,7 @@ public class UserControllerTest {
             .status(DataStatus.DEFAULT)
             .build();
 
-        doThrow(NoSuchElementException.class).when(userService).update(any());
+        willThrow(NoSuchElementException.class).given(userService).update(any());
 
         // when
         Throwable thrown = catchThrowable(() ->
