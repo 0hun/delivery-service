@@ -67,6 +67,19 @@ class StoreRepositoryTest {
         assertThat(store.getName()).isEqualTo(storeRequestDto.getName());
     }
 
+    @DisplayName("Store 조회 결과 없음")
+    @Test
+    void find_실패() {
+        // given
+
+        // when
+        Store store = storeRepository.findById(2L)
+            .orElse(null);
+
+        // then
+        assertThat(store).isNull();
+    }
+
     @DisplayName("Store 생성 테스트")
     @Test
     void create() {
@@ -79,7 +92,6 @@ class StoreRepositoryTest {
         Store store = stores.get(0);
         assertThat(store.getName()).isEqualTo(storeRequestDto.getName());
     }
-
 
     @DisplayName("Store 수정 테스트")
     @Test
