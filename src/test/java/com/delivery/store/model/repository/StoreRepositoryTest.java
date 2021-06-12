@@ -4,23 +4,30 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.delivery.store.model.StoreEnableStatus;
 import com.delivery.store.model.entity.StoreEntity;
 import com.delivery.store.model.request.StoreRequestDto;
 
 @DataJpaTest
+@Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class StoreRepositoryTest {
 
     @Autowired
     private StoreRepository storeRepository;
+    @Autowired
+    private EntityManager entityManager;
     private StoreRequestDto storeRequestDto;
 
     @BeforeEach
@@ -35,7 +42,20 @@ class StoreRepositoryTest {
         storeRepository.save(storeRequestDto.toEntity());
     }
 
+    /**
+     * Class 전체 테스트시
+     * auto-increament값을 초기화를 해줘야 한다
+     */
+    @AfterEach
+    void increamentInit() {
+        storeRepository.deleteAll();
+        this.entityManager
+            .createNativeQuery("ALTER TABLE store ALTER COLUMN `id` RESTART WITH 1")
+            .executeUpdate();
+    }
+
     @DisplayName("Store 조회 테스트")
+    @Test
     void find() {
         // given
 
@@ -62,6 +82,7 @@ class StoreRepositoryTest {
 
 
     @DisplayName("Store 수정 테스트")
+    @Test
     void update() {
         // given
         StoreRequestDto storeRequest = StoreRequestDto.builder()
@@ -82,6 +103,7 @@ class StoreRepositoryTest {
     }
 
     @DisplayName("Store 삭제 테스트")
+    @Test
     void delete() {
         // given
         StoreEntity store = storeRepository.findById(1L)
