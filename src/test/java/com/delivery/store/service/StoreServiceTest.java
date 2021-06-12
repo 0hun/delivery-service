@@ -1,10 +1,12 @@
 package com.delivery.store.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
@@ -49,6 +51,20 @@ class StoreServiceTest {
 
         // then
         assertThat(storeEntity.getName()).isEqualTo(store.getName());
+    }
+
+    @DisplayName("store_단건_조회_실패")
+    @Test
+    void find_실패() {
+        // given
+        given(storeRepository.findById(1L)).willReturn(Optional.empty());
+
+        // when
+        // then
+        assertThatThrownBy(() -> {
+            storeService.find(1L);
+        }).isInstanceOf(NoSuchElementException.class)
+            .hasMessage("해당 storeId가 존재하지 않습니다. storeId : 1");
     }
 
     @DisplayName("store_단건_생성")
@@ -100,6 +116,28 @@ class StoreServiceTest {
         assertThat(store.getName()).isEqualTo(storeRequest.getName());
     }
 
+    @DisplayName("store_단건_수정_실패")
+    @Test
+    void update_실패() {
+        // given
+        StoreRequestDto storeRequest = StoreRequestDto.builder()
+            .name("윤호네곱창집")
+            .telephone("02-1234-5778")
+            .address("서울 송파구 송파1로 52")
+            .managerName("윤호")
+            .businessNumber("123123931")
+            .build();
+        given(storeRepository.findById(1L)).willReturn(Optional.empty());
+
+        // when
+        // then
+        assertThatThrownBy(() -> {
+            storeService.update(1L, storeRequest);
+        }).isInstanceOf(NoSuchElementException.class)
+            .hasMessage("해당 storeId가 존재하지 않습니다. storeId : 1");
+    }
+
+
     @DisplayName("store_단건_비활성화")
     @Test
     void delete() {
@@ -120,5 +158,19 @@ class StoreServiceTest {
 
         // then
         assertThat(store.getStoreEnableStatus()).isEqualTo(StoreEnableStatus.DISABLED);
+    }
+
+    @DisplayName("store_단건_비활성화_실패")
+    @Test
+    void delete_실패() {
+        // given
+        given(storeRepository.findById(1L)).willReturn(Optional.empty());
+
+        // when
+        // then
+        assertThatThrownBy(() -> {
+            storeService.delete(1L);
+        }).isInstanceOf(NoSuchElementException.class)
+            .hasMessage("해당 storeId가 존재하지 않습니다. storeId : 1");
     }
 }
