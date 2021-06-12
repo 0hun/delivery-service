@@ -1,7 +1,5 @@
 package com.delivery.user.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
@@ -15,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.delivery.common.exception.ExceptionController;
 import com.delivery.user.domain.DataStatus;
 import com.delivery.user.domain.User;
 import com.delivery.user.dto.UserDto;
@@ -45,7 +44,10 @@ public class UserControllerTest {
 
     @BeforeEach
     public void init() {
-        mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+        mockMvc = MockMvcBuilders
+            .standaloneSetup(userController)
+            .setControllerAdvice(new ExceptionController())
+            .build();
     }
 
     @DisplayName("회원 가입 성공 테스트")
@@ -148,18 +150,17 @@ public class UserControllerTest {
 
     @DisplayName("회원 조회 실패 테스트")
     @Test
-    void findUserFail() {
+    void findUserFail() throws Exception {
         // given
         long userId = 1L;
 
         given(userService.find(userId)).willThrow(NoSuchElementException.class);
 
         // when
-        Throwable thrown = catchThrowable(() -> mockMvc.perform(get("/users/" + userId)
-            .accept(MediaType.APPLICATION_JSON)));
-
-        // then
-        assertThat(thrown.getCause()).isInstanceOf(NoSuchElementException.class);
+        mockMvc.perform(get("/users/" + userId)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNotFound())
+            .andDo(print());
     }
 
     @DisplayName("회원 삭제 성공 테스트")
@@ -180,18 +181,18 @@ public class UserControllerTest {
 
     @DisplayName("회원 삭제 실패 테스트")
     @Test
-    void deleteUserFail() {
+    void deleteUserFail() throws Exception {
         // given
         long userId = 1L;
 
         willThrow(NoSuchElementException.class).given(userService).delete(userId);
 
         // when
-        Throwable thrown = catchThrowable(() -> mockMvc.perform(delete("/users/" + userId)
-            .accept(MediaType.APPLICATION_JSON)));
-
         // then
-        assertThat(thrown.getCause()).isInstanceOf(NoSuchElementException.class);
+        mockMvc.perform(delete("/users/" + userId)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNotFound())
+            .andDo(print());
     }
 
     @DisplayName("회원 수정 성공 테스트")
@@ -220,7 +221,7 @@ public class UserControllerTest {
 
     @DisplayName("회원 수정 실패 테스트")
     @Test
-    void updateUserFail() {
+    void updateUserFail() throws Exception {
         // given
         UserDto updateUserDto = UserDto.builder()
             .email("whdudgns2654@naver.com")
@@ -233,13 +234,12 @@ public class UserControllerTest {
         willThrow(NoSuchElementException.class).given(userService).update(any());
 
         // when
-        Throwable thrown = catchThrowable(() ->
-            mockMvc.perform(patch("/users")
-                .content(new Gson().toJson(updateUserDto))
-                .contentType(MediaType.APPLICATION_JSON)));
-
         // then
-        assertThat(thrown.getCause()).isInstanceOf(NoSuchElementException.class);
+        mockMvc.perform(patch("/users")
+                .content(new Gson().toJson(updateUserDto))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andDo(print());
     }
 
 }
