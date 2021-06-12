@@ -13,14 +13,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.delivery.store.model.StoreEnableStatus;
 import com.delivery.store.model.entity.Store;
 import com.delivery.store.model.request.StoreRequestDto;
 
 @DataJpaTest
-@Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class StoreRepositoryTest {
 
@@ -43,8 +41,7 @@ class StoreRepositoryTest {
     }
 
     /**
-     * Class 전체 테스트시
-     * auto-increament값을 초기화를 해줘야 한다
+     * Class 전체 테스트시 auto-increament값을 초기화를 해줘야 한다
      */
     @AfterEach
     void increamentInit() {

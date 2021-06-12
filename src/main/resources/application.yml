@@ -26,3 +26,8 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         format_sql: true
+## mockMvc 한글 깨짐 처리
+server:
+  servlet:
+    encoding:
+      force-response: true
