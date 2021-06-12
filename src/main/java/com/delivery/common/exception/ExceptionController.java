@@ -6,13 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- *  @ControllerAdvice : 모든 컨트롤러에서 발생하는 예외를 잡아 처리해주는 어노테이션
+ *  @RestControllerAdvice : 모든 컨트롤러에서 발생하는 예외를 잡아 처리해주는 어노테이션(RestBody + ControllerAdvice)
  */
-@ControllerAdvice
+@RestControllerAdvice
 public class ExceptionController {
 
   /**
