@@ -3,7 +3,7 @@ package com.delivery.store.model.response;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import com.delivery.store.model.entity.StoreEntity;
+import com.delivery.store.model.entity.Store;
 
 import lombok.Getter;
 
@@ -19,7 +19,7 @@ public class StoreResponseDto {
     private String createdAt;
     private String updatedAt;
 
-    public StoreResponseDto(StoreEntity entity) {
+    public StoreResponseDto(Store entity) {
         this.id = entity.getId();
         this.name = entity.getName();
         this.telephone = entity.getTelephone();

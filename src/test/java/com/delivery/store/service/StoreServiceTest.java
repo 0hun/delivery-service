@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.delivery.store.model.StoreEnableStatus;
-import com.delivery.store.model.entity.StoreEntity;
+import com.delivery.store.model.entity.Store;
 import com.delivery.store.model.repository.StoreRepository;
 import com.delivery.store.model.request.StoreRequestDto;
 import com.delivery.store.model.response.StoreResponseDto;
@@ -33,7 +33,7 @@ class StoreServiceTest {
     @Test
     void find() {
         // given
-        StoreEntity storeEntity = StoreEntity.builder()
+        Store storeEntity = Store.builder()
             .id(1L)
             .name("곱돌이네")
             .telephone("02-1234-5678")
@@ -82,7 +82,7 @@ class StoreServiceTest {
             .businessNumber("123123931")
             .build();
 
-        StoreEntity store = StoreEntity.builder()
+        Store store = Store.builder()
             .id(1L)
             .name("곱돌이네")
             .telephone("02-1234-5678")
@@ -104,7 +104,7 @@ class StoreServiceTest {
     @Test
     void delete() {
         // given
-        StoreEntity store = StoreEntity.builder()
+        Store store = Store.builder()
             .id(1L)
             .name("곱돌이네")
             .telephone("02-1234-5678")

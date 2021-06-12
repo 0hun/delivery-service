@@ -16,7 +16,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.delivery.store.model.StoreEnableStatus;
-import com.delivery.store.model.entity.StoreEntity;
+import com.delivery.store.model.entity.Store;
 import com.delivery.store.model.request.StoreRequestDto;
 
 @DataJpaTest
@@ -60,7 +60,7 @@ class StoreRepositoryTest {
         // given
 
         // when
-        StoreEntity store = storeRepository.findById(1L)
+        Store store = storeRepository.findById(1L)
             .orElse(null);
 
         // then
@@ -73,10 +73,10 @@ class StoreRepositoryTest {
         // given
 
         // when
-        List<StoreEntity> stores = (List<StoreEntity>) storeRepository.findAll();
+        List<Store> stores = (List<Store>) storeRepository.findAll();
 
         // then
-        StoreEntity store = stores.get(0);
+        Store store = stores.get(0);
         assertThat(store.getName()).isEqualTo(storeRequestDto.getName());
     }
 
@@ -92,7 +92,7 @@ class StoreRepositoryTest {
             .managerName("황윤호")
             .businessNumber("123123933")
             .build();
-        StoreEntity store = storeRepository.findById(1L)
+        Store store = storeRepository.findById(1L)
             .orElse(null);
 
         // when
@@ -106,7 +106,7 @@ class StoreRepositoryTest {
     @Test
     void delete() {
         // given
-        StoreEntity store = storeRepository.findById(1L)
+        Store store = storeRepository.findById(1L)
             .orElse(null);
 
         // when
