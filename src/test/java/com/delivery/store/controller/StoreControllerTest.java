@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.delivery.store.model.StoreEnableStatus;
-import com.delivery.store.model.entity.StoreEntity;
+import com.delivery.store.model.entity.Store;
 import com.delivery.store.model.request.StoreRequestDto;
 import com.delivery.store.model.response.StoreResponseDto;
 import com.delivery.store.service.StoreService;
@@ -38,7 +38,7 @@ class StoreControllerTest {
     @Test
     void find() throws Exception {
         // given
-        StoreResponseDto store = new StoreResponseDto(StoreEntity.builder()
+        StoreResponseDto store = new StoreResponseDto(Store.builder()
             .id(1L)
             .name("곱돌이네")
             .telephone("02-1234-5678")
@@ -69,7 +69,7 @@ class StoreControllerTest {
             .businessNumber("123123933")
             .build();
 
-        StoreEntity store = StoreEntity.builder()
+        Store store = Store.builder()
             .id(1L)
             .name("곱돌이네")
             .telephone("02-1234-5678")

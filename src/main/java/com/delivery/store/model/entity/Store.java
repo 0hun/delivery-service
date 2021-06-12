@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "store")
-public class StoreEntity extends BaseTimeEntity {
+public class Store extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +34,7 @@ public class StoreEntity extends BaseTimeEntity {
     private StoreEnableStatus storeEnableStatus;
 
     @Builder
-    public StoreEntity(Long id, String name, String telephone, String address, String managerName,
+    public Store(Long id, String name, String telephone, String address, String managerName,
         String businessNumber, StoreEnableStatus storeEnableStatus) {
         this.id = id;
         this.name = name;

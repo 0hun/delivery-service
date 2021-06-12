@@ -9,21 +9,21 @@ import org.junit.jupiter.api.Test;
 import com.delivery.store.model.StoreEnableStatus;
 import com.delivery.store.model.request.StoreRequestDto;
 
-class StoreEntityTest {
+class StoreTest {
 
-    @DisplayName("StoreEntity 기본생성자")
+    @DisplayName("Store 기본생성자")
     @Test
     void store_default_생성자() {
-        StoreEntity storeEntity = new StoreEntity();
+        Store storeEntity = new Store();
 
         assertThat(storeEntity.getName()).isEqualTo(null);
     }
 
-    @DisplayName("StoreEntity 매핑")
+    @DisplayName("Store 매핑")
     @Test
     void store_엔티티_매핑() {
         // given
-        StoreEntity store = StoreEntity.builder()
+        Store store = Store.builder()
             .name("곱돌이네")
             .telephone("02-1234-5678")
             .address("서울 송파구 송파1로 27")
@@ -51,11 +51,11 @@ class StoreEntityTest {
         );
     }
 
-    @DisplayName("StoreEntity 업데이트")
+    @DisplayName("Store 업데이트")
     @Test
     void store_엔티티_수정() {
         // given
-        StoreEntity store = StoreEntity.builder()
+        Store store = Store.builder()
             .name("곱돌이네")
             .telephone("02-1234-5678")
             .address("서울 송파구 송파1로 27")
@@ -84,11 +84,11 @@ class StoreEntityTest {
         );
     }
 
-    @DisplayName("StoreEntity 비활성화")
+    @DisplayName("Store 비활성화")
     @Test
     void store_엔티티_비활성화() {
         // given
-        StoreEntity store = StoreEntity.builder()
+        Store store = Store.builder()
             .name("곱돌이네")
             .storeEnableStatus(StoreEnableStatus.ENABLED)
             .build();

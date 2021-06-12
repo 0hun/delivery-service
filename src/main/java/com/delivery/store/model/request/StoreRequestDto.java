@@ -1,6 +1,7 @@
 package com.delivery.store.model.request;
 
-import com.delivery.store.model.entity.StoreEntity;
+import com.delivery.store.model.StoreEnableStatus;
+import com.delivery.store.model.entity.Store;
 
 import lombok.*;
 
@@ -23,13 +24,14 @@ public class StoreRequestDto {
         this.businessNumber = businessNumber;
     }
 
-    public StoreEntity toEntity() {
-        return StoreEntity.builder()
+    public Store toEntity() {
+        return Store.builder()
             .name(name)
             .telephone(telephone)
             .address(address)
             .managerName(managerName)
             .businessNumber(businessNumber)
+            .storeEnableStatus(StoreEnableStatus.ENABLED)
             .build();
     }
 }
