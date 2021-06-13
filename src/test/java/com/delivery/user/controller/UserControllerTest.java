@@ -146,7 +146,7 @@ public class UserControllerTest {
         mockMvc.perform(get("/users/" + user.getId())
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(content().json(new Gson().toJson(user)))
+            .andExpect(content().json(new Gson().toJson(userDto)))
             .andDo(print());
     }
 
