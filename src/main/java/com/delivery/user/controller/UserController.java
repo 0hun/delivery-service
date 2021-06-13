@@ -54,10 +54,10 @@ public class UserController {
      * @return ResponseEntity(성공시 200 code, 실패시 NoSuchElementException)
      */
     @GetMapping("/{id}")
-    public ResponseEntity<User> findUser(@PathVariable long id) {
-        User user = userService.find(id);
+    public ResponseEntity<UserDto> findUser(@PathVariable long id) {
+        UserDto userDto = userService.find(id);
 
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(userDto);
     }
 
     /**

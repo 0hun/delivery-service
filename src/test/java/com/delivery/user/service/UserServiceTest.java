@@ -40,13 +40,15 @@ public class UserServiceTest {
             .status(DataStatus.DEFAULT)
             .build();
 
+        UserDto mockUserUserDto = UserDto.of(mockUser);
+
         given(userRepository.findById(mockUser.getId())).willReturn(Optional.of(mockUser));
 
         //when
-        User savedUser = userService.find(mockUser.getId());
+        UserDto userDto = userService.find(mockUser.getId());
 
         //then
-        assertThat(savedUser).isEqualTo(mockUser);
+        assertThat(userDto).isEqualTo(mockUserUserDto);
     }
 
     @DisplayName("user 조회 실패 테스트")
@@ -142,10 +144,10 @@ public class UserServiceTest {
         //when
         userService.delete(mockUser.getId());
 
-        User savedUser = userService.find(mockUser.getId());
+        UserDto userDto = userService.find(mockUser.getId());
 
         //then
-        assertThat(savedUser.getStatus()).isEqualTo(DataStatus.DELETED);
+        assertThat(userDto.getStatus()).isEqualTo(DataStatus.DELETED);
     }
 
     @DisplayName("user 삭제 실패 테스트")
@@ -189,10 +191,10 @@ public class UserServiceTest {
         //when
         userService.update(updateUserDto);
 
-        User savedUser = userService.find(mockUser.getEmail());
+        UserDto userDto = userService.find(mockUser.getEmail());
 
         //then
-        assertThat(savedUser.getName()).isEqualTo(updateUserDto.getName());
+        assertThat(userDto.getEmail()).isEqualTo(updateUserDto.getEmail());
     }
 
     @DisplayName("user 삭제 실패 테스트")

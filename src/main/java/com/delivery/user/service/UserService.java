@@ -8,44 +8,49 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
 public class UserService {
 
-  private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
-  public User find(long id) {
-    return userRepository.findById(id)
-        .orElseThrow(NoSuchElementException::new);
-  }
+    public UserDto find(long id) {
+        User user = userRepository.findById(id)
+            .orElseThrow(NoSuchElementException::new);
 
-  public User find(String email) {
-    return userRepository.findByEmail(email)
-        .orElseThrow(NoSuchElementException::new);
-  }
+        return UserDto.of(user);
+    }
 
-  public boolean existsByEmail(String email) {
-    return userRepository.existsByEmail(email);
-  }
+    public UserDto find(String email) {
+        User user = userRepository.findByEmail(email)
+            .orElseThrow(NoSuchElementException::new);
 
-  @Transactional
-  public User add(UserDto userDto) {
-    return userRepository.save(userDto.toEntity());
-  }
+        return UserDto.of(user);
+    }
 
-  @Transactional
-  public void delete(long id) {
-    User savedUser = userRepository.findById(id)
-        .orElseThrow(NoSuchElementException::new);
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
 
-    savedUser.delete();
-  }
+    @Transactional
+    public User add(UserDto userDto) {
+        return userRepository.save(userDto.toEntity());
+    }
 
-  @Transactional
-  public void update(UserDto updateUserDto) {
-    User savedUSer = userRepository.findByEmail(updateUserDto.getEmail())
-        .orElseThrow(NoSuchElementException::new);
+    @Transactional
+    public void delete(long id) {
+        User savedUser = userRepository.findById(id)
+            .orElseThrow(NoSuchElementException::new);
 
-    savedUSer.update(updateUserDto);
-  }
+        savedUser.delete();
+    }
+
+    @Transactional
+    public void update(UserDto updateUserDto) {
+        User savedUSer = userRepository.findByEmail(updateUserDto.getEmail())
+            .orElseThrow(NoSuchElementException::new);
+
+        savedUSer.update(updateUserDto);
+    }
 }

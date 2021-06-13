@@ -137,7 +137,9 @@ public class UserControllerTest {
             .status(DataStatus.DEFAULT)
             .build();
 
-        given(userService.find(user.getId())).willReturn(user);
+        UserDto userDto = UserDto.of(user);
+
+        given(userService.find(user.getId())).willReturn(userDto);
 
         // when
         // then
