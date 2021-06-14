@@ -32,6 +32,7 @@ public class StoreService {
     public void update(long storeId, StoreRequestDto storeRequest) {
         Store store = storeRepository.findById(storeId)
             .orElseThrow(() -> new NoSuchElementException("해당 storeId가 존재하지 않습니다. storeId : " + storeId));
+
         store.updateInformation(storeRequest);
     }
 

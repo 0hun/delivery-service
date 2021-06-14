@@ -13,7 +13,7 @@ class StoreTest {
 
     @DisplayName("Store 기본생성자")
     @Test
-    void store_default_생성자() {
+    void initStore() {
         Store storeEntity = new Store();
 
         assertThat(storeEntity.getName()).isEqualTo(null);
@@ -21,7 +21,7 @@ class StoreTest {
 
     @DisplayName("Store 매핑")
     @Test
-    void store_엔티티_매핑() {
+    void mapping() {
         // given
         Store store = Store.builder()
             .name("곱돌이네")
@@ -53,7 +53,7 @@ class StoreTest {
 
     @DisplayName("Store 업데이트")
     @Test
-    void store_엔티티_수정() {
+    void updateStore() {
         // given
         Store store = Store.builder()
             .name("곱돌이네")
@@ -86,7 +86,7 @@ class StoreTest {
 
     @DisplayName("Store 비활성화")
     @Test
-    void store_엔티티_비활성화() {
+    void disableStore() {
         // given
         Store store = Store.builder()
             .name("곱돌이네")

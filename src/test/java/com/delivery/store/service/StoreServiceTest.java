@@ -55,7 +55,7 @@ class StoreServiceTest {
 
     @DisplayName("store_단건_조회_실패")
     @Test
-    void find_실패() {
+    void findFailure() {
         // given
         given(storeRepository.findById(1L)).willReturn(Optional.empty());
 
@@ -118,7 +118,7 @@ class StoreServiceTest {
 
     @DisplayName("store_단건_수정_실패")
     @Test
-    void update_실패() {
+    void updateFailure() {
         // given
         StoreRequestDto storeRequest = StoreRequestDto.builder()
             .name("윤호네곱창집")
@@ -162,7 +162,7 @@ class StoreServiceTest {
 
     @DisplayName("store_단건_비활성화_실패")
     @Test
-    void delete_실패() {
+    void deleteFailure() {
         // given
         given(storeRepository.findById(1L)).willReturn(Optional.empty());
 

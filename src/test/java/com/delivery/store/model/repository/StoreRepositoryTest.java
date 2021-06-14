@@ -1,8 +1,10 @@
 package com.delivery.store.model.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.persistence.EntityManager;
 
@@ -23,10 +25,10 @@ import com.delivery.store.model.request.StoreRequestDto;
 class StoreRepositoryTest {
 
     @Autowired
-    private StoreRepository storeRepository;
+    StoreRepository storeRepository;
     @Autowired
-    private EntityManager entityManager;
-    private StoreRequestDto storeRequestDto;
+    EntityManager entityManager;
+    StoreRequestDto storeRequestDto;
 
     @BeforeEach
     void initData() {
@@ -41,10 +43,10 @@ class StoreRepositoryTest {
     }
 
     /**
-     * Class 전체 테스트시 auto-increament값을 초기화를 해줘야 한다
+     * Class 전체 테스트시 auto-increment 를 초기화 해줘야 한다
      */
     @AfterEach
-    void increamentInit() {
+    void resetAutoincrement() {
         storeRepository.deleteAll();
         this.entityManager
             .createNativeQuery("ALTER TABLE store ALTER COLUMN `id` RESTART WITH 1")
@@ -58,7 +60,7 @@ class StoreRepositoryTest {
 
         // when
         Store store = storeRepository.findById(1L)
-            .orElse(null);
+            .orElseThrow(() -> new NoSuchElementException("해당 ID는 존재하지 않습니다."));
 
         // then
         assertThat(store.getName()).isEqualTo(storeRequestDto.getName());
@@ -66,15 +68,15 @@ class StoreRepositoryTest {
 
     @DisplayName("Store 조회 결과 없음")
     @Test
-    void find_실패() {
+    void findFailure() {
         // given
 
-        // when
-        Store store = storeRepository.findById(2L)
-            .orElse(null);
-
-        // then
-        assertThat(store).isNull();
+        // when, then
+        assertThatThrownBy(() -> {
+            storeRepository.findById(2L)
+                .orElseThrow(() -> new NoSuchElementException("해당 ID는 존재하지 않습니다."));
+        }).isInstanceOf(NoSuchElementException.class)
+            .hasMessage("해당 ID는 존재하지 않습니다.");
     }
 
     @DisplayName("Store 생성 테스트")
@@ -102,7 +104,7 @@ class StoreRepositoryTest {
             .businessNumber("123123933")
             .build();
         Store store = storeRepository.findById(1L)
-            .orElse(null);
+            .orElseThrow(() -> new NoSuchElementException("해당 ID는 존재하지 않습니다."));
 
         // when
         store.updateInformation(storeRequest);
@@ -116,7 +118,7 @@ class StoreRepositoryTest {
     void delete() {
         // given
         Store store = storeRepository.findById(1L)
-            .orElse(null);
+            .orElseThrow(() -> new NoSuchElementException("해당 ID는 존재하지 않습니다."));
 
         // when
         store.disableStore();
