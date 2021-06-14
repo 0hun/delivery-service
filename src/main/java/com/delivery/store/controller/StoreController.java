@@ -3,6 +3,8 @@ package com.delivery.store.controller;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,13 +35,13 @@ public class StoreController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody StoreRequestDto storeRequest) throws URISyntaxException {
+    public ResponseEntity<?> create(@Valid @RequestBody StoreRequestDto storeRequest) throws URISyntaxException {
         Store store = storeService.create(storeRequest);
         return ResponseEntity.created(new URI("/stores/" + store.getId())).build();
     }
 
     @PutMapping("/{storeId}")
-    public ResponseEntity<?> update(@PathVariable long storeId, @RequestBody StoreRequestDto storeRequest) {
+    public ResponseEntity<?> update(@PathVariable long storeId, @Valid @RequestBody StoreRequestDto storeRequest) {
         storeService.update(storeId, storeRequest);
         return ResponseEntity.ok().build();
     }
