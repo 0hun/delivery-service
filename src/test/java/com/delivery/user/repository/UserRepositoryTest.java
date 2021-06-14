@@ -1,11 +1,13 @@
 package com.delivery.user.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 
 import com.delivery.user.domain.DataStatus;
 import com.delivery.user.domain.User;
 import com.delivery.user.dto.UserDto;
 import java.util.Optional;
+import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,17 +42,25 @@ public class UserRepositoryTest {
         assertThat(savedUser.getEmail()).isEqualTo(userDto.getEmail());
     }
 
-    @DisplayName("비어 있는 user 객체 저장 테스트")
+    @DisplayName("값이 일부 비어 있는 user 객체 저장 테스트 - 객체 insert시 제약조건 위반 테스트")
     @Test
     void saveEmptyUser() {
         //given
-        User user = new User();
+        UserDto userDto = UserDto.builder()
+            .name("조영훈")
+            .password("asdqwe1234567!@#")
+            .phoneNumber("010-1234-1234")
+            .status(DataStatus.DEFAULT)
+            .build();
 
         //when
-        User savedUser = userRepository.save(user);
+        Throwable thrown = catchThrowable(() -> {
+            userRepository.save(userDto.toEntity());
+        });
+
 
         //then
-        assertThat(savedUser.getEmail()).isNull();
+        assertThat(thrown.getCause()).isInstanceOf(ConstraintViolationException.class);
     }
 
     @DisplayName("user 조회 테스트")
