@@ -1,5 +1,6 @@
 package com.delivery.store.model.entity;
 
+import com.delivery.common.entity.BaseTimeEntity;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
