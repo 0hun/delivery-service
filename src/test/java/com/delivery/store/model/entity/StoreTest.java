@@ -26,9 +26,9 @@ class StoreTest {
         Store store = Store.builder()
             .name("곱돌이네")
             .telephone("02-1234-5678")
-            .address("서울 송파구 송파1로 27")
+            .address("서울 송파구 송파1로 4427")
             .managerName("황윤호")
-            .businessNumber("123123933")
+            .businessNumber("123-33-12345")
             .storeEnableStatus(StoreEnableStatus.ENABLED)
             .build();
 
@@ -44,9 +44,9 @@ class StoreTest {
         Assertions.assertAll(
             () -> assertThat(name).isEqualTo("곱돌이네"),
             () -> assertThat(telephone).isEqualTo("02-1234-5678"),
-            () -> assertThat(address).isEqualTo("서울 송파구 송파1로 27"),
+            () -> assertThat(address).isEqualTo("서울 송파구 송파1로 4427"),
             () -> assertThat(managerName).isEqualTo("황윤호"),
-            () -> assertThat(businessNumber).isEqualTo("123123933"),
+            () -> assertThat(businessNumber).isEqualTo("123-33-12345"),
             () -> assertThat(storeEnableStatus).isEqualTo(StoreEnableStatus.ENABLED)
         );
     }
@@ -58,17 +58,17 @@ class StoreTest {
         Store store = Store.builder()
             .name("곱돌이네")
             .telephone("02-1234-5678")
-            .address("서울 송파구 송파1로 27")
+            .address("서울 송파구 송파1로 4427")
             .managerName("황윤호")
-            .businessNumber("123123933")
+            .businessNumber("123-33-12345")
             .build();
 
         StoreRequestDto storeRequestDto = StoreRequestDto.builder()
             .name("윤호네")
-            .telephone("010-1234-5678")
-            .address("서울 송파구 송파1로 52")
-            .managerName("mane")
-            .businessNumber("123123933")
+            .telephone("02-1234-5678")
+            .address("서울 송파구 송파1로 4427")
+            .managerName("황윤호")
+            .businessNumber("123-33-12345")
             .build();
 
         // when

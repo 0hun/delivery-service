@@ -59,9 +59,9 @@ class StoreControllerTest {
             .id(1L)
             .name("곱돌이네")
             .telephone("02-1234-5678")
-            .address("서울 송파구 송파1로 27")
+            .address("서울 송파구 송파1로 4427")
             .managerName("황윤호")
-            .businessNumber("123123933")
+            .businessNumber("123-33-12345")
             .build());
 
         given(storeService.find(1L)).willReturn(store);
@@ -71,7 +71,7 @@ class StoreControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get(url)
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(content().string(containsString("123123933")));
+            .andExpect(content().string(containsString("123-33-12345")));
     }
 
     @DisplayName("store_단건_조회_실패")

@@ -39,9 +39,9 @@ class StoreServiceTest {
             .id(1L)
             .name("곱돌이네")
             .telephone("02-1234-5678")
-            .address("서울 송파구 송파1로 27")
+            .address("서울 송파구 송파1로 4427")
             .managerName("황윤호")
-            .businessNumber("123123933")
+            .businessNumber("123-33-12345")
             .storeEnableStatus(StoreEnableStatus.ENABLED)
             .build();
         given(storeRepository.findById(1L)).willReturn(Optional.of(storeEntity));
@@ -74,9 +74,9 @@ class StoreServiceTest {
         StoreRequestDto storeRequest = StoreRequestDto.builder()
             .name("곱돌이네")
             .telephone("02-1234-5678")
-            .address("서울 송파구 송파1로 27")
+            .address("서울 송파구 송파1로 4427")
             .managerName("황윤호")
-            .businessNumber("123123933")
+            .businessNumber("123-33-12345")
             .build();
 
         // when
@@ -95,7 +95,7 @@ class StoreServiceTest {
             .telephone("02-1234-5778")
             .address("서울 송파구 송파1로 52")
             .managerName("윤호")
-            .businessNumber("123123931")
+            .businessNumber("123-33-12345")
             .build();
 
         Store store = Store.builder()
@@ -104,7 +104,7 @@ class StoreServiceTest {
             .telephone("02-1234-5678")
             .address("서울 송파구 송파1로 27")
             .managerName("황윤호")
-            .businessNumber("123123933")
+            .businessNumber("123-33-12345")
             .storeEnableStatus(StoreEnableStatus.ENABLED)
             .build();
         given(storeRepository.findById(1L)).willReturn(Optional.of(store));
@@ -125,7 +125,7 @@ class StoreServiceTest {
             .telephone("02-1234-5778")
             .address("서울 송파구 송파1로 52")
             .managerName("윤호")
-            .businessNumber("123123931")
+            .businessNumber("123-33-12345")
             .build();
         given(storeRepository.findById(1L)).willReturn(Optional.empty());
 
@@ -148,7 +148,7 @@ class StoreServiceTest {
             .telephone("02-1234-5678")
             .address("서울 송파구 송파1로 27")
             .managerName("황윤호")
-            .businessNumber("123123933")
+            .businessNumber("123-33-12345")
             .build();
 
         given(storeRepository.findById(1L)).willReturn(Optional.of(store));

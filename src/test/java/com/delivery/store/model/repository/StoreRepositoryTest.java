@@ -35,9 +35,9 @@ class StoreRepositoryTest {
         storeRequestDto = StoreRequestDto.builder()
             .name("곱돌이네")
             .telephone("02-1234-5678")
-            .address("서울 송파구 송파1로 27")
+            .address("서울 송파구 송파1로 4427")
             .managerName("황윤호")
-            .businessNumber("123123933")
+            .businessNumber("123-33-12345")
             .build();
         storeRepository.save(storeRequestDto.toEntity());
     }
@@ -99,9 +99,9 @@ class StoreRepositoryTest {
         StoreRequestDto storeRequest = StoreRequestDto.builder()
             .name("곱돌이네2")
             .telephone("02-1234-5678")
-            .address("서울 송파구 송파1로 27")
+            .address("서울 송파구 송파1로 4427")
             .managerName("황윤호")
-            .businessNumber("123123933")
+            .businessNumber("123-33-12345")
             .build();
         Store store = storeRepository.findById(1L)
             .orElseThrow(() -> new NoSuchElementException("해당 ID는 존재하지 않습니다."));
