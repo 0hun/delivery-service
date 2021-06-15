@@ -27,14 +27,18 @@ public class ExceptionController {
     }
 
     /**
-     * repository에서 값을 찾지 못할 경우 NoSuchElementException 발생한다.
-     * NoSuchElementException 발생시 에러 메세지와 함께 http 404 code return
-     *
+     * repository에서 값을 찾지 못할 경우 NoSuchElementException 발생한다. NoSuchElementException 발생시 에러 메세지와 함께
+     * http 404 code return
      * @return ResponseEntity<String>
      */
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<String> noSuchElementException(Exception exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(Exception.class)
+    protected ResponseEntity<String> handleException(Exception exception) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());
     }
 
 }
