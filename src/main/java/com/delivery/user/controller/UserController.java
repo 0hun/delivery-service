@@ -75,6 +75,7 @@ public class UserController {
 
     /**
      * 회원 수정 메소드 회원 수정 성공시 204
+     *
      * @param userUpdateDto 수정할 회원의 정보
      * @return ResponseEntity(성공시 204 code, 실패시 NoSuchElementException)
      */

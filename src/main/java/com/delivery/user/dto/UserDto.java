@@ -58,7 +58,6 @@ public class UserDto {
     public User toEntity() {
         return User.builder()
             .email(this.email)
-            .password(this.password)
             .name(this.name)
             .phoneNumber(this.phoneNumber)
             .status(DataStatus.DEFAULT)

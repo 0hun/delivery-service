@@ -69,10 +69,13 @@ public class User extends BaseTimeEntity {
   }
 
   public void update(UserDto updateUserDto) {
-    this.password = updateUserDto.getPassword();
     this.name = updateUserDto.getName();
     this.phoneNumber = updateUserDto.getPhoneNumber();
     this.status = updateUserDto.getStatus();
+  }
+
+  public void changePassword(String password) {
+    this.password = password;
   }
 
   @Override

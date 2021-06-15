@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import com.delivery.user.domain.DataStatus;
 import com.delivery.user.domain.User;
@@ -16,7 +18,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -26,6 +30,9 @@ public class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Spy
+    private BCryptPasswordEncoder passwordEncoder;
 
     @DisplayName("user 조회 테스트")
     @Test
@@ -216,6 +223,68 @@ public class UserServiceTest {
 
         //then
         assertThat(thrown).isInstanceOf(NoSuchElementException.class);
+    }
+
+    @DisplayName("비밀번호 인코딩 테스트")
+    @Test
+    void addUserWithPasswordEncode() {
+        //given
+        UserDto userDto = UserDto.builder()
+            .email("whdudgns2654@naver.com")
+            .name("조영훈")
+            .password("asdqwe1234567!@#")
+            .phoneNumber("010-1234-1234")
+            .status(DataStatus.DEFAULT)
+            .build();
+
+        String encodedPassword = passwordEncoder.encode("asdqwe1234567!@#");
+
+        User mockUser = User.builder()
+            .id(1L)
+            .email("whdudgns2654@naver.com")
+            .name("조영훈")
+            .password(encodedPassword)
+            .phoneNumber("010-1234-1234")
+            .status(DataStatus.DEFAULT)
+            .build();
+
+        given(userRepository.save(any())).willReturn(mockUser);
+
+        //when
+        User savedUser = userService.add(userDto);
+
+        //then
+        assertThat(passwordEncoder.matches(userDto.getPassword(), savedUser.getPassword())).isTrue();
+    }
+
+    @DisplayName("비밀번호 인코딩 테스트")
+    @Test
+    void addUserWithPasswordEncodeFail() {
+        //given
+        UserDto userDto = UserDto.builder()
+            .email("whdudgns2654@naver.com")
+            .name("조영훈")
+            .password("asdqwe1234567!@#")
+            .phoneNumber("010-1234-1234")
+            .status(DataStatus.DEFAULT)
+            .build();
+
+        User mockUser = User.builder()
+            .id(1L)
+            .email("whdudgns2654@naver.com")
+            .name("조영훈")
+            .password("asdqwe1234567!@#")
+            .phoneNumber("010-1234-1234")
+            .status(DataStatus.DEFAULT)
+            .build();
+
+        given(userRepository.save(any())).willReturn(mockUser);
+
+        //when
+        User savedUser = userService.add(userDto);
+
+        //then
+        assertThat(passwordEncoder.matches(userDto.getPassword(), savedUser.getPassword())).isFalse();
     }
 
 }

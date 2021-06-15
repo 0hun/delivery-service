@@ -5,6 +5,7 @@ import com.delivery.user.dto.UserDto;
 import com.delivery.user.repository.UserRepository;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public UserDto find(long id) {
         User user = userRepository.findById(id)
@@ -35,7 +37,13 @@ public class UserService {
 
     @Transactional
     public User add(UserDto userDto) {
-        return userRepository.save(userDto.toEntity());
+        String encodedPassword = passwordEncoder.encode(userDto.getPassword());
+
+        User user = userDto.toEntity();
+
+        user.changePassword(encodedPassword);
+
+        return userRepository.save(user);
     }
 
     @Transactional
