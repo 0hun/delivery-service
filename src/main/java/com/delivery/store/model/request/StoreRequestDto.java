@@ -36,7 +36,6 @@ public class StoreRequestDto {
     private String managerName;
 
     @NotBlank
-    @Length(min = 12, max = 12)
     @Pattern(regexp = "^\\d{3}-\\d{2}-\\d{5}$", message = "사업자 번호는 xxx-xx-xxxxx 로 입력해주세요")
     private String businessNumber;
 
