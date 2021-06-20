@@ -35,7 +35,7 @@ public class StoreResponseDto {
             localDateTime = LocalDateTime.now();
         }
 
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:MM:ss");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return localDateTime.format(dateTimeFormatter);
     }
 }

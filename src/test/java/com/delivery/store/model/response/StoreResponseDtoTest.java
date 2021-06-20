@@ -60,8 +60,8 @@ class StoreResponseDtoTest {
 
         // then
         Assertions.assertAll(
-            () -> assertThat(createdAt).isGreaterThan(stringNowTime),
-            () -> assertThat(updatedAt).isGreaterThan(stringNowTime)
+            () -> assertThat(createdAt).isGreaterThanOrEqualTo(stringNowTime),
+            () -> assertThat(updatedAt).isGreaterThanOrEqualTo(stringNowTime)
         );
     }
 }
