@@ -37,7 +37,7 @@ public class User extends BaseTimeEntity {
   private String email;
 
   // 비밀번호
-  @Column(name = "password", length = 16, nullable = false)
+  @Column(name = "password", nullable = false)
   private String password;
 
   // 이름
@@ -45,7 +45,7 @@ public class User extends BaseTimeEntity {
   private String name;
 
   // 휴대폰 번호
-  @Column(name = "phoneNumber", length = 12)
+  @Column(name = "phoneNumber", length = 13)
   private String phoneNumber;
 
   // 회원 상태 DEFAULT(기본), DELETED(삭제됨)
@@ -71,7 +71,6 @@ public class User extends BaseTimeEntity {
   public void update(UserDto updateUserDto) {
     this.name = updateUserDto.getName();
     this.phoneNumber = updateUserDto.getPhoneNumber();
-    this.status = updateUserDto.getStatus();
   }
 
   public void changePassword(String password) {

@@ -4,11 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 import com.delivery.user.domain.DataStatus;
 import com.delivery.user.domain.User;
+import com.delivery.user.dto.UserChangePasswordDto;
 import com.delivery.user.dto.UserDto;
 import com.delivery.user.repository.UserRepository;
 import java.util.NoSuchElementException;
@@ -285,6 +284,70 @@ public class UserServiceTest {
 
         //then
         assertThat(passwordEncoder.matches(userDto.getPassword(), savedUser.getPassword())).isFalse();
+    }
+
+    @DisplayName("user change password 테스트")
+    @Test
+    void UserChangePassword() {
+        //given
+        String password = "asdqwe123456!@#";
+        String encodedPassword = passwordEncoder.encode(password);
+
+        String newPassword = "asdqwe7234567!@#";
+
+        User mockUser = User.builder()
+            .id(1L)
+            .email("whdudgns2654@naver.com")
+            .name("조영훈")
+            .password(encodedPassword)
+            .phoneNumber("010-1234-1234")
+            .status(DataStatus.DEFAULT)
+            .build();
+
+        UserChangePasswordDto userChangePasswordDto = UserChangePasswordDto.builder()
+            .email(mockUser.getEmail())
+            .password(password)
+            .newPassword(newPassword)
+            .build();
+
+        given(userRepository.findByEmail(mockUser.getEmail())).willReturn(Optional.of(mockUser));
+
+        //when
+        userService.changePassword(userChangePasswordDto);
+
+        User user = userRepository.findByEmail(mockUser.getEmail()).get();
+
+        //then
+        assertThat(passwordEncoder.matches(newPassword, user.getPassword())).isTrue();
+    }
+
+    @DisplayName("user change password Fail 테스트")
+    @Test
+    void UserChangePasswordFail() {
+        //given
+        String password = "asdqwe123456!@#";
+        String encodedPassword = passwordEncoder.encode(password);
+
+        User mockUser = User.builder()
+            .id(1L)
+            .email("whdudgns2654@naver.com")
+            .name("조영훈")
+            .password(encodedPassword)
+            .phoneNumber("010-1234-1234")
+            .status(DataStatus.DEFAULT)
+            .build();
+
+        UserChangePasswordDto userChangePasswordDto = UserChangePasswordDto.builder()
+            .email(mockUser.getEmail())
+            .password(password)
+            .newPassword(password)
+            .build();
+
+        //when
+        Throwable thrown = catchThrowable(() -> userService.changePassword(userChangePasswordDto));
+
+        //then
+        assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.delivery.user.controller;
 
 import com.delivery.user.domain.User;
+import com.delivery.user.dto.UserChangePasswordDto;
 import com.delivery.user.dto.UserDto;
 import com.delivery.user.service.UserService;
 import java.net.URI;
@@ -82,6 +83,19 @@ public class UserController {
     @PatchMapping()
     public ResponseEntity<Void> updateUser(@RequestBody @Valid UserDto userUpdateDto) {
         userService.update(userUpdateDto);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * 회원 수정 메소드 회원 비밀번호 수정 성공시 204
+     *
+     * @param dto 비밀번호 수정할 회원의 정보
+     * @return ResponseEntity(성공시 204 code, 실패시 NoSuchElementException)
+     */
+    @PatchMapping("/password")
+    public ResponseEntity<Void> changePassword(@RequestBody @Valid UserChangePasswordDto dto) {
+        userService.changePassword(dto);
 
         return ResponseEntity.noContent().build();
     }

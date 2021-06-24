@@ -1,6 +1,7 @@
 package com.delivery.user.service;
 
 import com.delivery.user.domain.User;
+import com.delivery.user.dto.UserChangePasswordDto;
 import com.delivery.user.dto.UserDto;
 import com.delivery.user.repository.UserRepository;
 import java.util.NoSuchElementException;
@@ -60,5 +61,16 @@ public class UserService {
             .orElseThrow(NoSuchElementException::new);
 
         savedUSer.update(updateUserDto);
+    }
+
+    public void changePassword(UserChangePasswordDto dto) {
+        dto.checkDuplicatedPassword();
+
+        User savedUSer = userRepository.findByEmail(dto.getEmail())
+            .orElseThrow(NoSuchElementException::new);
+
+        String encodedNewPassword = passwordEncoder.encode(dto.getNewPassword());
+
+        savedUSer.changePassword(encodedNewPassword);
     }
 }

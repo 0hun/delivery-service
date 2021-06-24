@@ -16,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.delivery.common.exception.ExceptionController;
 import com.delivery.user.domain.DataStatus;
 import com.delivery.user.domain.User;
+import com.delivery.user.dto.UserChangePasswordDto;
 import com.delivery.user.dto.UserDto;
 import com.delivery.user.service.UserService;
 import com.google.gson.Gson;
@@ -242,6 +243,50 @@ public class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andDo(print());
+    }
+
+    @DisplayName("회원 비밀번호 수정 성공 테스트")
+    @Test
+    void changePassword() throws Exception {
+        // given
+        UserChangePasswordDto dto = UserChangePasswordDto.builder()
+            .email("whdudgns2654@naver.com")
+            .password("asdqwe1234568!@#")
+            .newPassword("asdqwe1234577!@#")
+            .build();
+
+        willDoNothing().given(userService).changePassword(any());
+
+        // when
+        // then
+        mockMvc.perform(patch("/users/password")
+            .content(new Gson().toJson(dto))
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNoContent())
+            .andDo(print());
+    }
+
+
+    @DisplayName("회원 비밀번호 수정 실패 테스트")
+    @Test
+    void changePasswordFail() throws Exception {
+        // given
+        UserChangePasswordDto dto = UserChangePasswordDto.builder()
+            .email("whdudgns2654@naver.com")
+            .password("asdqwe1234568!@#")
+            .newPassword("asdqwe1234577!@#")
+            .build();
+
+        willThrow(IllegalArgumentException.class).given(userService).changePassword(any());
+
+        // when
+        // then
+        mockMvc.perform(patch("/users/password")
+            .content(new Gson().toJson(dto))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest())
+            .andDo(print());
     }
 
 }
