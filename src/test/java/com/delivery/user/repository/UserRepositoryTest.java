@@ -2,7 +2,10 @@ package com.delivery.user.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.delivery.common.config.JpaAuditingConfig;
 import com.delivery.user.domain.DataStatus;
 import com.delivery.user.domain.User;
 import com.delivery.user.dto.UserDto;
@@ -14,9 +17,14 @@ import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-@DataJpaTest
+@DataJpaTest(includeFilters = @ComponentScan.Filter(
+    type = FilterType.ASSIGNABLE_TYPE,
+    classes = JpaAuditingConfig.class
+))
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class UserRepositoryTest {
 
@@ -262,6 +270,30 @@ public class UserRepositoryTest {
 
         //then
         assertThat(passwordEncoder.matches(newPassword, encodedNewPassword)).isTrue();
+    }
+
+    @Test
+    void saveUserAutoAuditedTest() {
+        //given
+        String password = "asdqwe123456!@#";
+
+        String encodedPassword = passwordEncoder.encode(password);
+
+        UserDto userDto = UserDto.builder()
+            .email("whdudgns2654@naver.com")
+            .name("조영훈")
+            .password(encodedPassword)
+            .phoneNumber("010-1234-1234")
+            .status(DataStatus.DEFAULT)
+            .build();
+
+        //when
+        User savedUser = userRepository.save(userDto.toEntity());
+
+        assertAll(
+            () -> assertNotNull(savedUser.getCreatedAt()),
+            () -> assertNotNull(savedUser.getUpdatedAt())
+        );
     }
 
 }

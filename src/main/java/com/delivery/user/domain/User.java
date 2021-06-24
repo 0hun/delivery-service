@@ -21,9 +21,9 @@ import lombok.NoArgsConstructor;
  * 이때 접근 권한이 PROTECTED이면 된다. 또한 기본 생성자를 열어둘 경우 불완전한 entity 객체가 생성될 수 있으므로 기본 생성자의 접근을 제한한다.
  */
 
+@Getter
 @Entity
 @Table(name = "user")
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseTimeEntity {
 
