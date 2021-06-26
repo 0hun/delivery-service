@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Length;
 
 import com.delivery.store.domain.StoreEnableStatus;
 import com.delivery.store.domain.Store;
+import com.delivery.user.domain.User;
 
 import lombok.*;
 
@@ -39,13 +40,16 @@ public class StoreRequestDto {
     @Pattern(regexp = "^\\d{3}-\\d{2}-\\d{5}$", message = "사업자 번호는 xxx-xx-xxxxx 로 입력해주세요")
     private String businessNumber;
 
+    private Long userId;
+
     @Builder
-    public StoreRequestDto(String name, String telephone, String address, String managerName, String businessNumber) {
+    public StoreRequestDto(String name, String telephone, String address, String managerName, String businessNumber, Long userId) {
         this.name = name;
         this.telephone = telephone;
         this.address = address;
         this.managerName = managerName;
         this.businessNumber = businessNumber;
+        this.userId = userId;
     }
 
     public Store toEntity() {
@@ -56,6 +60,7 @@ public class StoreRequestDto {
             .managerName(managerName)
             .businessNumber(businessNumber)
             .storeEnableStatus(StoreEnableStatus.ENABLED)
+            .user(User.builder().id(userId).build())
             .build();
     }
 }

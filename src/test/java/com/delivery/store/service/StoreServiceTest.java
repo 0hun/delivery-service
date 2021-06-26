@@ -21,6 +21,7 @@ import com.delivery.store.domain.Store;
 import com.delivery.store.repository.StoreRepository;
 import com.delivery.store.dto.request.StoreRequestDto;
 import com.delivery.store.dto.response.StoreResponseDto;
+import com.delivery.user.domain.User;
 
 @ExtendWith(MockitoExtension.class)
 class StoreServiceTest {
@@ -43,6 +44,7 @@ class StoreServiceTest {
             .managerName("황윤호")
             .businessNumber("123-33-12345")
             .storeEnableStatus(StoreEnableStatus.ENABLED)
+            .user(User.builder().id(1L).build())
             .build();
         given(storeRepository.findById(1L)).willReturn(Optional.of(storeEntity));
 
@@ -77,6 +79,7 @@ class StoreServiceTest {
             .address("서울 송파구 송파1로 4427")
             .managerName("황윤호")
             .businessNumber("123-33-12345")
+            .userId(1L)
             .build();
 
         // when

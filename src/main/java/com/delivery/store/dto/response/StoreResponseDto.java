@@ -18,6 +18,7 @@ public class StoreResponseDto {
     private String businessNumber;
     private String createdAt;
     private String updatedAt;
+    private Long userId;
 
     public StoreResponseDto(Store entity) {
         this.id = entity.getId();
@@ -28,6 +29,7 @@ public class StoreResponseDto {
         this.businessNumber = entity.getBusinessNumber();
         this.createdAt = localDateTimeToString(entity.getCreatedAt());
         this.updatedAt = localDateTimeToString(entity.getUpdatedAt());
+        this.userId = entity.getUser().getId();
     }
 
     public String localDateTimeToString(LocalDateTime localDateTime) {

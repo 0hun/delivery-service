@@ -41,6 +41,7 @@ class StoreRequestDtoTest {
             .address("서울 송파구 송파1로 27")
             .managerName("황윤호")
             .businessNumber("123-33-12345")
+            .userId(1L)
             .build();
 
         // when
@@ -49,6 +50,7 @@ class StoreRequestDtoTest {
         String address = store.getAddress();
         String managerName = store.getManagerName();
         String businessNumber = store.getBusinessNumber();
+        long userId = store.getUserId();
 
         // then
         Assertions.assertAll(

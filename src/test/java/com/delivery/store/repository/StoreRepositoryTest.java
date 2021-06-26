@@ -19,6 +19,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import com.delivery.store.domain.StoreEnableStatus;
 import com.delivery.store.domain.Store;
 import com.delivery.store.dto.request.StoreRequestDto;
+import com.delivery.user.domain.DataStatus;
+import com.delivery.user.domain.User;
+import com.delivery.user.dto.UserDto;
+import com.delivery.user.repository.UserRepository;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -26,18 +30,33 @@ class StoreRepositoryTest {
 
     @Autowired
     StoreRepository storeRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
     @Autowired
     EntityManager entityManager;
+
     StoreRequestDto storeRequestDto;
 
     @BeforeEach
     void initData() {
+        User user = userRepository.save(UserDto.builder()
+            .email("whdudgns2654@naver.com")
+            .name("조영훈")
+            .password("asdqwe1234567!@#")
+            .phoneNumber("010-1234-1234")
+            .status(DataStatus.DEFAULT)
+            .build()
+            .toEntity());
+
         storeRequestDto = StoreRequestDto.builder()
             .name("곱돌이네")
             .telephone("02-1234-5678")
             .address("서울 송파구 송파1로 4427")
             .managerName("황윤호")
             .businessNumber("123-33-12345")
+            .userId(user.getId())
             .build();
         storeRepository.save(storeRequestDto.toEntity());
     }
@@ -49,7 +68,7 @@ class StoreRepositoryTest {
     void resetAutoincrement() {
         storeRepository.deleteAll();
         this.entityManager
-            .createNativeQuery("ALTER TABLE store ALTER COLUMN `id` RESTART WITH 1")
+            .createNativeQuery("ALTER TABLE store ALTER COLUMN `store_id` RESTART WITH 1")
             .executeUpdate();
     }
 

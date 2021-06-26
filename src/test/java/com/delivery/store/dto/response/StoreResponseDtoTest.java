@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.delivery.store.domain.Store;
+import com.delivery.user.domain.User;
 
 class StoreResponseDtoTest {
 
@@ -23,6 +24,7 @@ class StoreResponseDtoTest {
             .address("서울 송파구 송파1로 27")
             .managerName("황윤호")
             .businessNumber("123-33-12345")
+            .user(User.builder().id(1L).build())
             .build();
 
         // when
@@ -33,6 +35,7 @@ class StoreResponseDtoTest {
         String address = storeResponseDto.getAddress();
         String managerName = storeResponseDto.getManagerName();
         String businessNumber = storeResponseDto.getBusinessNumber();
+        Long userId = storeResponseDto.getUserId();
 
         // then
         Assertions.assertAll(
@@ -40,7 +43,8 @@ class StoreResponseDtoTest {
             () -> assertThat(telephone).isEqualTo("02-1234-5678"),
             () -> assertThat(address).isEqualTo("서울 송파구 송파1로 27"),
             () -> assertThat(managerName).isEqualTo("황윤호"),
-            () -> assertThat(businessNumber).isEqualTo("123-33-12345")
+            () -> assertThat(businessNumber).isEqualTo("123-33-12345"),
+            () -> assertThat(userId).isEqualTo(1L)
         );
     }
 
@@ -51,6 +55,7 @@ class StoreResponseDtoTest {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String stringNowTime = LocalDateTime.now().format(dateTimeFormatter);
         Store store = Store.builder()
+            .user(User.builder().id(1L).build())
             .build();
 
         // when

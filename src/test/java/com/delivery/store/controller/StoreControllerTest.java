@@ -30,6 +30,7 @@ import com.delivery.store.domain.StoreEnableStatus;
 import com.delivery.store.dto.request.StoreRequestDto;
 import com.delivery.store.dto.response.StoreResponseDto;
 import com.delivery.store.service.StoreService;
+import com.delivery.user.domain.User;
 import com.google.gson.Gson;
 
 @ExtendWith(MockitoExtension.class)
@@ -62,6 +63,7 @@ class StoreControllerTest {
             .address("서울 송파구 송파1로 4427")
             .managerName("황윤호")
             .businessNumber("123-33-12345")
+            .user(User.builder().id(1L).build())
             .build());
 
         given(storeService.find(1L)).willReturn(store);
