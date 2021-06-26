@@ -1,4 +1,4 @@
-package com.delivery.store.model.response;
+package com.delivery.store.dto.response;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.delivery.store.model.entity.Store;
+import com.delivery.store.domain.Store;
 
 class StoreResponseDtoTest {
 

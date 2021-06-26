@@ -1,4 +1,4 @@
-package com.delivery.store.model.entity;
+package com.delivery.store.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -8,8 +8,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.delivery.store.model.StoreEnableStatus;
-import com.delivery.store.model.request.StoreRequestDto;
+
+import com.delivery.store.domain.BaseTimeEntity;
+import com.delivery.store.domain.StoreEnableStatus;
+import com.delivery.store.dto.request.StoreRequestDto;
 
 import lombok.AccessLevel;
 import lombok.Builder;

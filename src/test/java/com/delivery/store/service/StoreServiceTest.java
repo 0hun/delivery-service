@@ -16,11 +16,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.delivery.store.model.StoreEnableStatus;
-import com.delivery.store.model.entity.Store;
-import com.delivery.store.model.repository.StoreRepository;
-import com.delivery.store.model.request.StoreRequestDto;
-import com.delivery.store.model.response.StoreResponseDto;
+import com.delivery.store.domain.StoreEnableStatus;
+import com.delivery.store.domain.Store;
+import com.delivery.store.repository.StoreRepository;
+import com.delivery.store.dto.request.StoreRequestDto;
+import com.delivery.store.dto.response.StoreResponseDto;
 
 @ExtendWith(MockitoExtension.class)
 class StoreServiceTest {

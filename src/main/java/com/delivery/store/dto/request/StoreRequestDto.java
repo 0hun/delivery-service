@@ -1,12 +1,12 @@
-package com.delivery.store.model.request;
+package com.delivery.store.dto.request;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.delivery.store.model.StoreEnableStatus;
-import com.delivery.store.model.entity.Store;
+import com.delivery.store.domain.StoreEnableStatus;
+import com.delivery.store.domain.Store;
 
 import lombok.*;
 

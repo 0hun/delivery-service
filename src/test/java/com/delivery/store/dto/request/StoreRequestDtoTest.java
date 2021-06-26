@@ -1,4 +1,4 @@
-package com.delivery.store.model.request;
+package com.delivery.store.dto.request;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

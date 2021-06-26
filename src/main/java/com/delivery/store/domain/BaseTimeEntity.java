@@ -1,4 +1,4 @@
-package com.delivery.store.model.entity;
+package com.delivery.store.domain;
 
 import java.time.LocalDateTime;
 

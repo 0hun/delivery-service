@@ -1,9 +1,9 @@
-package com.delivery.store.model.response;
+package com.delivery.store.dto.response;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import com.delivery.store.model.entity.Store;
+import com.delivery.store.domain.Store;
 
 import lombok.Getter;
 

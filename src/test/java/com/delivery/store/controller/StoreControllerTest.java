@@ -25,10 +25,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.delivery.common.exception.ExceptionController;
-import com.delivery.store.model.StoreEnableStatus;
-import com.delivery.store.model.entity.Store;
-import com.delivery.store.model.request.StoreRequestDto;
-import com.delivery.store.model.response.StoreResponseDto;
+import com.delivery.store.domain.Store;
+import com.delivery.store.domain.StoreEnableStatus;
+import com.delivery.store.dto.request.StoreRequestDto;
+import com.delivery.store.dto.response.StoreResponseDto;
 import com.delivery.store.service.StoreService;
 import com.google.gson.Gson;
 

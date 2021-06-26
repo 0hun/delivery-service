@@ -1,4 +1,4 @@
-package com.delivery.store.model.repository;
+package com.delivery.store.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -16,9 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import com.delivery.store.model.StoreEnableStatus;
-import com.delivery.store.model.entity.Store;
-import com.delivery.store.model.request.StoreRequestDto;
+import com.delivery.store.domain.StoreEnableStatus;
+import com.delivery.store.domain.Store;
+import com.delivery.store.dto.request.StoreRequestDto;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
