@@ -56,11 +56,11 @@ public class UserService {
     }
 
     @Transactional
-    public void update(UserDto updateUserDto) {
-        User savedUSer = userRepository.findByEmail(updateUserDto.getEmail())
+    public void update(UserDto userDto) {
+        User savedUSer = userRepository.findByEmail(userDto.getEmail())
             .orElseThrow(NoSuchElementException::new);
 
-        savedUSer.update(updateUserDto);
+        savedUSer.update(userDto);
     }
 
     public void changePassword(UserChangePasswordDto dto) {

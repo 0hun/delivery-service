@@ -15,9 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
 import com.delivery.store.model.StoreEnableStatus;
 import com.delivery.store.model.entity.Store;
 import com.delivery.store.model.request.StoreRequestDto;
@@ -36,6 +36,7 @@ class StoreControllerTest {
 
     @DisplayName("store_단건_조회")
     @Test
+    @WithMockUser
     void find() throws Exception {
         // given
         StoreResponseDto store = new StoreResponseDto(Store.builder()
@@ -51,6 +52,7 @@ class StoreControllerTest {
 
         // when, then
         String url = "/stores/1";
+
         mockMvc.perform(MockMvcRequestBuilders.get(url)
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -59,6 +61,7 @@ class StoreControllerTest {
 
     @DisplayName("store_단건_생성")
     @Test
+    @WithMockUser
     void create() throws Exception {
         // given
         StoreRequestDto storeRequest = StoreRequestDto.builder()
@@ -83,6 +86,7 @@ class StoreControllerTest {
 
         // when, then
         String url = "/stores";
+
         mockMvc.perform(MockMvcRequestBuilders.post(url)
             .contentType(MediaType.APPLICATION_JSON)
             .content(new Gson().toJson(storeRequest)))
@@ -94,6 +98,7 @@ class StoreControllerTest {
 
     @DisplayName("store_단건_수정")
     @Test
+    @WithMockUser
     void update() throws Exception {
         // given
         StoreRequestDto storeRequest = StoreRequestDto.builder()
@@ -108,6 +113,7 @@ class StoreControllerTest {
 
         // when, then
         String url = "/stores/1";
+
         mockMvc.perform(MockMvcRequestBuilders.put(url)
             .contentType(MediaType.APPLICATION_JSON)
             .content(new Gson().toJson(storeRequest)))
@@ -118,15 +124,18 @@ class StoreControllerTest {
 
     @DisplayName("store_단건_비활성화")
     @Test
+    @WithMockUser
     void delete() throws Exception {
         // given
         willDoNothing().given(storeService).delete(1L);
 
         // when, then
         String url = "/stores/1";
+
         mockMvc.perform(MockMvcRequestBuilders.delete(url)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
+
         then(storeService).should().delete(eq(1L));
     }
 }

@@ -2,21 +2,28 @@ package com.delivery.store.model.request;
 
 import com.delivery.store.model.StoreEnableStatus;
 import com.delivery.store.model.entity.Store;
-
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
 
 @Getter
-@EqualsAndHashCode
 public class StoreRequestDto {
 
     private String name;
+
     private String telephone;
+
     private String address;
+
     private String managerName;
+
     private String businessNumber;
 
+    public StoreRequestDto() {
+    }
+
     @Builder
-    public StoreRequestDto(String name, String telephone, String address, String managerName, String businessNumber) {
+    public StoreRequestDto(String name, String telephone, String address, String managerName,
+        String businessNumber) {
         this.name = name;
         this.telephone = telephone;
         this.address = address;

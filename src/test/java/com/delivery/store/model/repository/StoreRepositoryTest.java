@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.delivery.store.model.StoreEnableStatus;
 import com.delivery.store.model.entity.Store;
 import com.delivery.store.model.request.StoreRequestDto;
@@ -26,8 +25,10 @@ class StoreRepositoryTest {
 
     @Autowired
     private StoreRepository storeRepository;
+
     @Autowired
     private EntityManager entityManager;
+
     private StoreRequestDto storeRequestDto;
 
     @BeforeEach
@@ -39,6 +40,7 @@ class StoreRepositoryTest {
             .managerName("황윤호")
             .businessNumber("123123933")
             .build();
+
         storeRepository.save(storeRequestDto.toEntity());
     }
 
@@ -90,6 +92,7 @@ class StoreRepositoryTest {
 
         // then
         Store store = stores.get(0);
+
         assertThat(store.getName()).isEqualTo(storeRequestDto.getName());
     }
 
@@ -104,6 +107,7 @@ class StoreRepositoryTest {
             .managerName("황윤호")
             .businessNumber("123123933")
             .build();
+
         Store store = storeRepository.findById(1L)
             .orElse(null);
 

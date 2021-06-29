@@ -36,7 +36,7 @@ public class UserController {
      * @return ResponseEntity(성공시 201 code, 실패시 400 code)
      */
     @PostMapping()
-    public ResponseEntity<?> signUp(@RequestBody @Valid UserDto userDto) throws URISyntaxException {
+    public ResponseEntity<?> addUser(@RequestBody @Valid UserDto userDto) throws URISyntaxException {
         boolean existsUser = userService.existsByEmail(userDto.getEmail());
 
         if (existsUser) {
@@ -77,12 +77,12 @@ public class UserController {
     /**
      * 회원 수정 메소드 회원 수정 성공시 204
      *
-     * @param userUpdateDto 수정할 회원의 정보
+     * @param userDto 수정할 회원의 정보
      * @return ResponseEntity(성공시 204 code, 실패시 NoSuchElementException)
      */
     @PatchMapping()
-    public ResponseEntity<Void> updateUser(@RequestBody @Valid UserDto userUpdateDto) {
-        userService.update(userUpdateDto);
+    public ResponseEntity<Void> updateUser(@RequestBody @Valid UserDto userDto) {
+        userService.update(userDto);
 
         return ResponseEntity.noContent().build();
     }

@@ -8,10 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import com.delivery.store.model.StoreEnableStatus;
 import com.delivery.store.model.request.StoreRequestDto;
-
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,11 +24,17 @@ public class Store extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
+
     private String telephone;
+
     private String address;
+
     private String managerName;
+
     private String businessNumber;
+
     @Enumerated(EnumType.STRING)
     private StoreEnableStatus storeEnableStatus;
 

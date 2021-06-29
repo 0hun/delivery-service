@@ -13,16 +13,14 @@ public class UserChangePasswordDto {
 
     @NotBlank
     @Email
-    @Length(max = 255)
+    @Length(max = 100)
     private String email;
 
     @NotBlank
-    @Length(min = 8, max = 16)
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@!%*#?&])[A-Za-z\\d$@!%*#?&]{8,16}$")
     private String password;
 
     @NotBlank
-    @Length(min = 8, max = 16)
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@!%*#?&])[A-Za-z\\d$@!%*#?&]{8,16}$")
     private String newPassword;
 

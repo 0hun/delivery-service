@@ -2,6 +2,9 @@ package com.delivery.user.dto;
 
 import com.delivery.user.domain.DataStatus;
 import com.delivery.user.domain.User;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -19,18 +22,16 @@ public class UserDto {
     // 회원 아이디(이메일)
     @NotBlank
     @Email
-    @Length(max = 255)
+    @Length(max = 100)
     private String email;
 
     // 패스워드
     @NotBlank
-    @Length(min = 8, max = 16)
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@!%*#?&])[A-Za-z\\d$@!%*#?&]{8,16}$")
     private String password;
 
     // 이름
     @NotBlank
-    @Length(min = 3, max = 20)
     @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9_-]{3,20}$")
     private String name;
 
@@ -41,18 +42,21 @@ public class UserDto {
     // 상태 DEFAULT(기본), DELETED(삭제됨)
     private DataStatus status;
 
+    private List<String> roles = new ArrayList<>();
+
     public UserDto() {
     }
 
     @Builder
     public UserDto(long id, String email, String password, String name, String phoneNumber,
-        DataStatus status) {
+        DataStatus status, List<String> roles) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.status = status;
+        this.roles = roles;
     }
 
     public User toEntity() {
@@ -61,6 +65,7 @@ public class UserDto {
             .password(this.password)
             .name(this.name)
             .phoneNumber(this.phoneNumber)
+            .roles(Collections.singletonList("ROLE_USER")) // 최초 가입시 USER 로 설정
             .status(DataStatus.DEFAULT)
             .build();
     }
@@ -71,6 +76,7 @@ public class UserDto {
             .email(user.getEmail())
             .name(user.getName())
             .phoneNumber(user.getPhoneNumber())
+            .roles(user.getRoles())
             .status(user.getStatus())
             .build();
     }
@@ -86,11 +92,12 @@ public class UserDto {
         UserDto userDto = (UserDto) o;
         return id == userDto.id && Objects.equals(email, userDto.email) && Objects
             .equals(password, userDto.password) && Objects.equals(name, userDto.name)
-            && Objects.equals(phoneNumber, userDto.phoneNumber) && status == userDto.status;
+            && Objects.equals(phoneNumber, userDto.phoneNumber) && status == userDto.status
+            && Objects.equals(roles, userDto.roles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, password, name, phoneNumber, status);
+        return Objects.hash(id, email, password, name, phoneNumber, status, roles);
     }
 }
