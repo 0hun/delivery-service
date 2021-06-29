@@ -44,6 +44,7 @@ class StoreServiceTest {
             .businessNumber("123-33-12345")
             .storeEnableStatus(StoreEnableStatus.ENABLED)
             .build();
+
         given(storeRepository.findById(1L)).willReturn(Optional.of(storeEntity));
 
         // when
@@ -107,6 +108,7 @@ class StoreServiceTest {
             .businessNumber("123-33-12345")
             .storeEnableStatus(StoreEnableStatus.ENABLED)
             .build();
+
         given(storeRepository.findById(1L)).willReturn(Optional.of(store));
 
         // when
@@ -127,6 +129,7 @@ class StoreServiceTest {
             .managerName("윤호")
             .businessNumber("123-33-12345")
             .build();
+
         given(storeRepository.findById(1L)).willReturn(Optional.empty());
 
         // when

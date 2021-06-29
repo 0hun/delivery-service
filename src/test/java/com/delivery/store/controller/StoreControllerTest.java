@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.NoSuchElementException;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,10 +19,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
 import com.delivery.common.exception.ExceptionController;
 import com.delivery.store.model.StoreEnableStatus;
 import com.delivery.store.model.entity.Store;
@@ -53,6 +52,7 @@ class StoreControllerTest {
 
     @DisplayName("store_단건_조회")
     @Test
+    @WithMockUser
     void find() throws Exception {
         // given
         StoreResponseDto store = new StoreResponseDto(Store.builder()
@@ -68,6 +68,7 @@ class StoreControllerTest {
 
         // when, then
         String url = "/stores/1";
+
         mockMvc.perform(MockMvcRequestBuilders.get(url)
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -89,6 +90,7 @@ class StoreControllerTest {
 
     @DisplayName("store_단건_생성")
     @Test
+    @WithMockUser
     void create() throws Exception {
         // given
         StoreRequestDto storeRequest = StoreRequestDto.builder()
@@ -113,6 +115,7 @@ class StoreControllerTest {
 
         // when, then
         String url = "/stores";
+
         mockMvc.perform(MockMvcRequestBuilders.post(url)
             .contentType(MediaType.APPLICATION_JSON)
             .content(new Gson().toJson(storeRequest)))
@@ -139,6 +142,7 @@ class StoreControllerTest {
 
     @DisplayName("store_단건_수정")
     @Test
+    @WithMockUser
     void update() throws Exception {
         // given
         StoreRequestDto storeRequest = StoreRequestDto.builder()
@@ -153,6 +157,7 @@ class StoreControllerTest {
 
         // when, then
         String url = "/stores/1";
+
         mockMvc.perform(MockMvcRequestBuilders.put(url)
             .contentType(MediaType.APPLICATION_JSON)
             .content(new Gson().toJson(storeRequest)))
@@ -202,15 +207,18 @@ class StoreControllerTest {
 
     @DisplayName("store_단건_비활성화")
     @Test
+    @WithMockUser
     void delete() throws Exception {
         // given
         willDoNothing().given(storeService).delete(1L);
 
         // when, then
         String url = "/stores/1";
+
         mockMvc.perform(MockMvcRequestBuilders.delete(url)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
+
         then(storeService).should().delete(eq(1L));
     }
 

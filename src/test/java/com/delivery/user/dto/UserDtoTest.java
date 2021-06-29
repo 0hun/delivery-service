@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.delivery.user.domain.DataStatus;
 import com.delivery.user.domain.User;
+import java.util.Collections;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -45,6 +46,7 @@ public class UserDtoTest {
             .name(name)
             .password(password)
             .phoneNumber(phoneNumber)
+            .roles(Collections.singletonList("ROLE_USER"))
             .status(DataStatus.DEFAULT)
             .build();
 
@@ -61,6 +63,7 @@ public class UserDtoTest {
             .name("조영훈")
             .password("asdqwe1234567!@#")
             .phoneNumber("010-1234-1234")
+            .roles(Collections.singletonList("ROLE_USER"))
             .status(DataStatus.DEFAULT)
             .build();
 
@@ -86,6 +89,7 @@ public class UserDtoTest {
             .name(name)
             .password(password)
             .phoneNumber(phoneNumber)
+            .roles(Collections.singletonList("ROLE_USER"))
             .status(DataStatus.DEFAULT)
             .build();
 
@@ -110,11 +114,54 @@ public class UserDtoTest {
             .name(name)
             .password(password)
             .phoneNumber(phoneNumber)
+            .roles(Collections.singletonList("ROLE_USER"))
             .status(DataStatus.DEFAULT)
             .build();
 
         //then
         Set<ConstraintViolation<UserDto>> violations = validator.validate(userDto);
+
+        assertThat(violations).isNotEmpty();
+    }
+
+    @DisplayName("userChangeDto 객체 생성 시 validator 성공 테스트")
+    @Test
+    void userChangePasswordDtoValidatorSuccess() {
+        //given
+        String email = "whdudgns2654@gmail.com";
+        String password = "asdqwe1234567!@#";
+        String newPassword = "asdqwe7234567!@#";
+
+        //when
+        UserChangePasswordDto userChangePasswordDto = UserChangePasswordDto.builder()
+            .email(email)
+            .password(password)
+            .newPassword(newPassword)
+            .build();
+
+        //then
+        Set<ConstraintViolation<UserChangePasswordDto>> violations = validator.validate(userChangePasswordDto);
+
+        assertThat(violations).isEmpty();
+    }
+
+    @DisplayName("userChangeDto 객체 생성 시 validator 성공 테스트")
+    @Test
+    void userChangePasswordDtoValidatorFail() {
+        //given
+        String email = "whdudgns2654@gmail.com";
+        String password = "1234567";
+        String newPassword = "1234556777";
+
+        //when
+        UserChangePasswordDto userChangePasswordDto = UserChangePasswordDto.builder()
+            .email(email)
+            .password(password)
+            .newPassword(newPassword)
+            .build();
+
+        //then
+        Set<ConstraintViolation<UserChangePasswordDto>> violations = validator.validate(userChangePasswordDto);
 
         assertThat(violations).isNotEmpty();
     }

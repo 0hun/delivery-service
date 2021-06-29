@@ -2,17 +2,13 @@ package com.delivery.store.model.request;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-
 import org.hibernate.validator.constraints.Length;
-
 import com.delivery.store.model.StoreEnableStatus;
 import com.delivery.store.model.entity.Store;
-
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
 
 @Getter
-@EqualsAndHashCode
-@NoArgsConstructor
 public class StoreRequestDto {
 
     @NotBlank
@@ -38,10 +34,15 @@ public class StoreRequestDto {
     @NotBlank
     @Length(min = 12, max = 12)
     @Pattern(regexp = "^\\d{3}-\\d{2}-\\d{5}$", message = "사업자 번호는 xxx-xx-xxxxx 로 입력해주세요")
+
     private String businessNumber;
 
+    public StoreRequestDto() {
+    }
+
     @Builder
-    public StoreRequestDto(String name, String telephone, String address, String managerName, String businessNumber) {
+    public StoreRequestDto(String name, String telephone, String address, String managerName,
+        String businessNumber) {
         this.name = name;
         this.telephone = telephone;
         this.address = address;
