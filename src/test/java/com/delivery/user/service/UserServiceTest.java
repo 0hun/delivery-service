@@ -7,6 +7,7 @@ import static org.mockito.BDDMockito.given;
 
 import com.delivery.user.domain.DataStatus;
 import com.delivery.user.domain.User;
+import com.delivery.user.domain.UserRole;
 import com.delivery.user.dto.UserChangePasswordDto;
 import com.delivery.user.dto.UserDto;
 import com.delivery.user.repository.UserRepository;
@@ -44,6 +45,7 @@ public class UserServiceTest {
             .password("asdqwe1234567!@#")
             .phoneNumber("010-1234-1234")
             .status(DataStatus.DEFAULT)
+            .role(UserRole.ROLE_USER)
             .build();
 
         UserDto mockUserUserDto = UserDto.of(mockUser);
@@ -82,6 +84,7 @@ public class UserServiceTest {
             .password("asdqwe1234567!@#")
             .phoneNumber("010-1234-1234")
             .status(DataStatus.DEFAULT)
+            .role(UserRole.ROLE_USER)
             .build();
 
         User mockUser = User.builder()
@@ -91,6 +94,7 @@ public class UserServiceTest {
             .password("asdqwe1234567!@#")
             .phoneNumber("010-1234-1234")
             .status(DataStatus.DEFAULT)
+            .role(UserRole.ROLE_USER)
             .build();
 
         given(userRepository.save(any())).willReturn(mockUser);
@@ -143,6 +147,7 @@ public class UserServiceTest {
             .password("asdqwe1234567!@#")
             .phoneNumber("010-1234-1234")
             .status(DataStatus.DEFAULT)
+            .role(UserRole.ROLE_USER)
             .build();
 
         given(userRepository.findById(mockUser.getId())).willReturn(Optional.of(mockUser));
@@ -182,6 +187,7 @@ public class UserServiceTest {
             .password("asdqwe1234567!@#")
             .phoneNumber("010-1234-1234")
             .status(DataStatus.DEFAULT)
+            .role(UserRole.ROLE_USER)
             .build();
 
         UserDto updateUserDto = UserDto.builder()
@@ -190,6 +196,7 @@ public class UserServiceTest {
             .password("asdqwe1234568!@#")
             .phoneNumber("010-1234-1235")
             .status(DataStatus.DEFAULT)
+            .role(UserRole.ROLE_USER)
             .build();
 
         given(userRepository.findByEmail(mockUser.getEmail())).willReturn(Optional.of(mockUser));
@@ -213,6 +220,7 @@ public class UserServiceTest {
             .password("asdqwe1234568!@#")
             .phoneNumber("010-1234-1235")
             .status(DataStatus.DEFAULT)
+            .role(UserRole.ROLE_USER)
             .build();
 
         given(userRepository.findByEmail(updateUserDto.getEmail())).willReturn(Optional.empty());
@@ -234,6 +242,7 @@ public class UserServiceTest {
             .password("asdqwe1234567!@#")
             .phoneNumber("010-1234-1234")
             .status(DataStatus.DEFAULT)
+            .role(UserRole.ROLE_USER)
             .build();
 
         String encodedPassword = passwordEncoder.encode("asdqwe1234567!@#");
@@ -245,6 +254,7 @@ public class UserServiceTest {
             .password(encodedPassword)
             .phoneNumber("010-1234-1234")
             .status(DataStatus.DEFAULT)
+            .role(UserRole.ROLE_USER)
             .build();
 
         given(userRepository.save(any())).willReturn(mockUser);
@@ -266,6 +276,7 @@ public class UserServiceTest {
             .password("asdqwe1234567!@#")
             .phoneNumber("010-1234-1234")
             .status(DataStatus.DEFAULT)
+            .role(UserRole.ROLE_USER)
             .build();
 
         User mockUser = User.builder()
@@ -275,6 +286,7 @@ public class UserServiceTest {
             .password("asdqwe1234567!@#")
             .phoneNumber("010-1234-1234")
             .status(DataStatus.DEFAULT)
+            .role(UserRole.ROLE_USER)
             .build();
 
         given(userRepository.save(any())).willReturn(mockUser);
@@ -302,6 +314,7 @@ public class UserServiceTest {
             .password(encodedPassword)
             .phoneNumber("010-1234-1234")
             .status(DataStatus.DEFAULT)
+            .role(UserRole.ROLE_USER)
             .build();
 
         UserChangePasswordDto userChangePasswordDto = UserChangePasswordDto.builder()
@@ -335,6 +348,7 @@ public class UserServiceTest {
             .password(encodedPassword)
             .phoneNumber("010-1234-1234")
             .status(DataStatus.DEFAULT)
+            .role(UserRole.ROLE_USER)
             .build();
 
         UserChangePasswordDto userChangePasswordDto = UserChangePasswordDto.builder()

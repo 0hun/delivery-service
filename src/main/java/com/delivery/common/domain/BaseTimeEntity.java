@@ -1,4 +1,4 @@
-package com.delivery.common.entity;
+package com.delivery.common.domain;
 
 import java.time.LocalDateTime;
 

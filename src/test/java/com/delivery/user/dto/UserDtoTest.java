@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.delivery.user.domain.DataStatus;
 import com.delivery.user.domain.User;
-import java.util.Collections;
+import com.delivery.user.domain.UserRole;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -46,7 +46,7 @@ public class UserDtoTest {
             .name(name)
             .password(password)
             .phoneNumber(phoneNumber)
-            .roles(Collections.singletonList("ROLE_USER"))
+            .role(UserRole.ROLE_USER)
             .status(DataStatus.DEFAULT)
             .build();
 
@@ -63,7 +63,7 @@ public class UserDtoTest {
             .name("조영훈")
             .password("asdqwe1234567!@#")
             .phoneNumber("010-1234-1234")
-            .roles(Collections.singletonList("ROLE_USER"))
+            .role(UserRole.ROLE_USER)
             .status(DataStatus.DEFAULT)
             .build();
 
@@ -89,7 +89,7 @@ public class UserDtoTest {
             .name(name)
             .password(password)
             .phoneNumber(phoneNumber)
-            .roles(Collections.singletonList("ROLE_USER"))
+            .role(UserRole.ROLE_USER)
             .status(DataStatus.DEFAULT)
             .build();
 
@@ -114,7 +114,7 @@ public class UserDtoTest {
             .name(name)
             .password(password)
             .phoneNumber(phoneNumber)
-            .roles(Collections.singletonList("ROLE_USER"))
+            .role(UserRole.ROLE_USER)
             .status(DataStatus.DEFAULT)
             .build();
 

@@ -1,17 +1,13 @@
 package com.delivery.user.domain;
 
-import com.delivery.common.entity.BaseTimeEntity;
+import com.delivery.common.domain.BaseTimeEntity;
 import com.delivery.user.dto.UserDto;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -60,19 +56,19 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private DataStatus status;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> roles = new ArrayList<>();
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 
     @Builder
     public User(Long id, String email, String password, String name, String phoneNumber,
-        DataStatus status, List<String> roles) {
+        DataStatus status, UserRole role) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.status = status;
-        this.roles = roles;
+        this.role = role;
     }
 
     public void delete() {
@@ -100,12 +96,12 @@ public class User extends BaseTimeEntity implements UserDetails {
         return Objects.equals(id, user.id) && Objects.equals(email, user.email)
             && Objects.equals(password, user.password) && Objects
             .equals(name, user.name) && Objects.equals(phoneNumber, user.phoneNumber)
-            && status == user.status && Objects.equals(roles, user.roles);
+            && status == user.status && Objects.equals(role, user.role);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, password, name, phoneNumber, status, roles);
+        return Objects.hash(id, email, password, name, phoneNumber, status, role);
     }
 
     @Override
