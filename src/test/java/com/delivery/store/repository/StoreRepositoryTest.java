@@ -15,9 +15,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
-import com.delivery.store.domain.StoreEnableStatus;
+import com.delivery.config.TestJpaConfig;
 import com.delivery.store.domain.Store;
+import com.delivery.store.domain.StoreEnableStatus;
 import com.delivery.store.dto.request.StoreRequestDto;
 import com.delivery.user.domain.DataStatus;
 import com.delivery.user.domain.User;
@@ -26,16 +28,17 @@ import com.delivery.user.repository.UserRepository;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Import(TestJpaConfig.class)
 class StoreRepositoryTest {
+
+    @Autowired
+    EntityManager entityManager;
 
     @Autowired
     StoreRepository storeRepository;
 
     @Autowired
     UserRepository userRepository;
-
-    @Autowired
-    EntityManager entityManager;
 
     StoreRequestDto storeRequestDto;
 
@@ -78,7 +81,7 @@ class StoreRepositoryTest {
         // given
 
         // when
-        Store store = storeRepository.findById(1L)
+        Store store = storeRepository.findStoreById(1L)
             .orElseThrow(() -> new NoSuchElementException("해당 ID는 존재하지 않습니다."));
 
         // then
@@ -92,7 +95,7 @@ class StoreRepositoryTest {
 
         // when, then
         assertThatThrownBy(() -> {
-            storeRepository.findById(2L)
+            storeRepository.findStoreById(2L)
                 .orElseThrow(() -> new NoSuchElementException("해당 ID는 존재하지 않습니다."));
         }).isInstanceOf(NoSuchElementException.class)
             .hasMessage("해당 ID는 존재하지 않습니다.");
@@ -122,7 +125,7 @@ class StoreRepositoryTest {
             .managerName("황윤호")
             .businessNumber("123-33-12345")
             .build();
-        Store store = storeRepository.findById(1L)
+        Store store = storeRepository.findStoreById(1L)
             .orElseThrow(() -> new NoSuchElementException("해당 ID는 존재하지 않습니다."));
 
         // when
@@ -136,7 +139,7 @@ class StoreRepositoryTest {
     @Test
     void delete() {
         // given
-        Store store = storeRepository.findById(1L)
+        Store store = storeRepository.findStoreById(1L)
             .orElseThrow(() -> new NoSuchElementException("해당 ID는 존재하지 않습니다."));
 
         // when

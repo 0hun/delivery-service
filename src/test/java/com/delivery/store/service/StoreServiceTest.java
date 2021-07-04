@@ -16,11 +16,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.delivery.store.domain.StoreEnableStatus;
 import com.delivery.store.domain.Store;
-import com.delivery.store.repository.StoreRepository;
+import com.delivery.store.domain.StoreEnableStatus;
 import com.delivery.store.dto.request.StoreRequestDto;
 import com.delivery.store.dto.response.StoreResponseDto;
+import com.delivery.store.repository.StoreRepository;
 import com.delivery.user.domain.User;
 
 @ExtendWith(MockitoExtension.class)
@@ -46,7 +46,7 @@ class StoreServiceTest {
             .storeEnableStatus(StoreEnableStatus.ENABLED)
             .user(User.builder().id(1L).build())
             .build();
-        given(storeRepository.findById(1L)).willReturn(Optional.of(storeEntity));
+        given(storeRepository.findStoreById(1L)).willReturn(Optional.of(storeEntity));
 
         // when
         StoreResponseDto store = storeService.find(1L);
@@ -59,7 +59,7 @@ class StoreServiceTest {
     @Test
     void findFailure() {
         // given
-        given(storeRepository.findById(1L)).willReturn(Optional.empty());
+        given(storeRepository.findStoreById(1L)).willReturn(Optional.empty());
 
         // when
         // then
@@ -110,7 +110,7 @@ class StoreServiceTest {
             .businessNumber("123-33-12345")
             .storeEnableStatus(StoreEnableStatus.ENABLED)
             .build();
-        given(storeRepository.findById(1L)).willReturn(Optional.of(store));
+        given(storeRepository.findStoreById(1L)).willReturn(Optional.of(store));
 
         // when
         storeService.update(1L, storeRequest);
@@ -130,7 +130,7 @@ class StoreServiceTest {
             .managerName("윤호")
             .businessNumber("123-33-12345")
             .build();
-        given(storeRepository.findById(1L)).willReturn(Optional.empty());
+        given(storeRepository.findStoreById(1L)).willReturn(Optional.empty());
 
         // when
         // then
@@ -154,7 +154,7 @@ class StoreServiceTest {
             .businessNumber("123-33-12345")
             .build();
 
-        given(storeRepository.findById(1L)).willReturn(Optional.of(store));
+        given(storeRepository.findStoreById(1L)).willReturn(Optional.of(store));
 
         // when
         storeService.delete(1L);
@@ -167,7 +167,7 @@ class StoreServiceTest {
     @Test
     void deleteFailure() {
         // given
-        given(storeRepository.findById(1L)).willReturn(Optional.empty());
+        given(storeRepository.findStoreById(1L)).willReturn(Optional.empty());
 
         // when
         // then
