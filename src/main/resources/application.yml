@@ -9,8 +9,7 @@ spring:
     activate:
       on-profile: local
   datasource:
-    hikari:
-      jdbc-url: jdbc:h2:mem://localhost/~/testdb;MODE=MYSQL
+    url: jdbc:h2:mem://localhost/~/testdb;MODE=MYSQL
     username: sa
     password:
   jpa:
@@ -50,3 +49,11 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL57Dialect
         format_sql: true
+    open-in-view: false
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace

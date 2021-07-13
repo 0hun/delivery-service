@@ -13,46 +13,36 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.delivery.common.exception.ExceptionController;
 import com.delivery.user.domain.DataStatus;
 import com.delivery.user.domain.User;
+import com.delivery.user.dto.UserChangePasswordDto;
 import com.delivery.user.dto.UserDto;
 import com.delivery.user.service.UserService;
 import com.google.gson.Gson;
 import java.util.NoSuchElementException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-@ExtendWith(MockitoExtension.class)
+
+@WebMvcTest(UserController.class)
 public class UserControllerTest {
 
-    @InjectMocks
-    private UserController userController;
-
-    @Mock
+    @MockBean
     private UserService userService;
 
+    @Autowired
     private MockMvc mockMvc;
-
-    @BeforeEach
-    public void init() {
-        mockMvc = MockMvcBuilders
-            .standaloneSetup(userController)
-            .setControllerAdvice(new ExceptionController())
-            .build();
-    }
 
     @DisplayName("회원 가입 성공 테스트")
     @Test
-    void signUp() throws Exception {
+    @WithMockUser
+    void addUser() throws Exception {
         // given
         UserDto userDto = UserDto.builder()
             .email("whdudgns2654@naver.com")
@@ -86,7 +76,8 @@ public class UserControllerTest {
 
     @DisplayName("회원 가입 실패 테스트 - 값이 없는 빈 객체 전달하여 회원 가입 실패 테스트")
     @Test
-    void signUpFail() throws Exception {
+    @WithMockUser
+    void addUserFail() throws Exception {
         // given
         UserDto userDto = new UserDto();
 
@@ -102,7 +93,8 @@ public class UserControllerTest {
 
     @DisplayName("회원 가입 실패 테스트 - 같은 이메일을 가진 유저가 존재하여 실패 테스트")
     @Test
-    void signUpFailWithExistsUser() throws Exception {
+    @WithMockUser
+    void addUserWithExistsUser() throws Exception {
         // given
         UserDto userDto = UserDto.builder()
             .email("whdudgns2654@naver.com")
@@ -126,6 +118,7 @@ public class UserControllerTest {
 
     @DisplayName("회원 조회 성공 테스트")
     @Test
+    @WithMockUser
     void findUser() throws Exception {
         // given
         User user = User.builder()
@@ -137,19 +130,22 @@ public class UserControllerTest {
             .status(DataStatus.DEFAULT)
             .build();
 
-        given(userService.find(user.getId())).willReturn(user);
+        UserDto userDto = UserDto.of(user);
+
+        given(userService.find(user.getId())).willReturn(userDto);
 
         // when
         // then
         mockMvc.perform(get("/users/" + user.getId())
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(content().json(new Gson().toJson(user)))
+            .andExpect(content().json(new Gson().toJson(userDto)))
             .andDo(print());
     }
 
     @DisplayName("회원 조회 실패 테스트")
     @Test
+    @WithMockUser
     void findUserFail() throws Exception {
         // given
         long userId = 1L;
@@ -165,6 +161,7 @@ public class UserControllerTest {
 
     @DisplayName("회원 삭제 성공 테스트")
     @Test
+    @WithMockUser
     void deleteUser() throws Exception {
         // given
         long userId = 1L;
@@ -181,6 +178,7 @@ public class UserControllerTest {
 
     @DisplayName("회원 삭제 실패 테스트")
     @Test
+    @WithMockUser
     void deleteUserFail() throws Exception {
         // given
         long userId = 1L;
@@ -197,6 +195,7 @@ public class UserControllerTest {
 
     @DisplayName("회원 수정 성공 테스트")
     @Test
+    @WithMockUser
     void update() throws Exception {
         // given
         UserDto updateUserDto = UserDto.builder()
@@ -221,6 +220,7 @@ public class UserControllerTest {
 
     @DisplayName("회원 수정 실패 테스트")
     @Test
+    @WithMockUser
     void updateUserFail() throws Exception {
         // given
         UserDto updateUserDto = UserDto.builder()
@@ -240,6 +240,52 @@ public class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andDo(print());
+    }
+
+    @DisplayName("회원 비밀번호 수정 성공 테스트")
+    @Test
+    @WithMockUser
+    void changePassword() throws Exception {
+        // given
+        UserChangePasswordDto dto = UserChangePasswordDto.builder()
+            .email("whdudgns2654@naver.com")
+            .password("asdqwe1234568!@#")
+            .newPassword("asdqwe1234577!@#")
+            .build();
+
+        willDoNothing().given(userService).changePassword(any());
+
+        // when
+        // then
+        mockMvc.perform(patch("/users/password")
+            .content(new Gson().toJson(dto))
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNoContent())
+            .andDo(print());
+    }
+
+
+    @DisplayName("회원 비밀번호 수정 실패 테스트")
+    @Test
+    @WithMockUser
+    void changePasswordFail() throws Exception {
+        // given
+        UserChangePasswordDto dto = UserChangePasswordDto.builder()
+            .email("whdudgns2654@naver.com")
+            .password("asdqwe1234568!@#")
+            .newPassword("asdqwe1234577!@#")
+            .build();
+
+        willThrow(IllegalArgumentException.class).given(userService).changePassword(any());
+
+        // when
+        // then
+        mockMvc.perform(patch("/users/password")
+            .content(new Gson().toJson(dto))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest())
+            .andDo(print());
     }
 
 }

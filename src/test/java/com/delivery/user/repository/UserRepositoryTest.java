@@ -1,20 +1,34 @@
 package com.delivery.user.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.delivery.common.config.JpaAuditingConfig;
 import com.delivery.config.TestJpaConfig;
 import com.delivery.user.domain.DataStatus;
 import com.delivery.user.domain.User;
 import com.delivery.user.dto.UserDto;
+import java.util.Collections;
 import java.util.Optional;
+import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-@DataJpaTest
+
+@DataJpaTest(includeFilters = @ComponentScan.Filter(
+    type = FilterType.ASSIGNABLE_TYPE,
+    classes = JpaAuditingConfig.class
+))
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Import(TestJpaConfig.class)
 public class UserRepositoryTest {
@@ -22,15 +36,23 @@ public class UserRepositoryTest {
     @Autowired
     UserRepository userRepository;
 
+    @Spy
+    private BCryptPasswordEncoder passwordEncoder;
+
     @DisplayName("user 객체 저장 테스트")
     @Test
     void saveUser() {
         //given
+        String password = "asdqwe123456!@#";
+
+        String encodedPassword = passwordEncoder.encode(password);
+
         UserDto userDto = UserDto.builder()
             .email("whdudgns2654@naver.com")
             .name("조영훈")
-            .password("asdqwe1234567!@#")
+            .password(encodedPassword)
             .phoneNumber("010-1234-1234")
+            .roles(Collections.singletonList("ROLE_USER"))
             .status(DataStatus.DEFAULT)
             .build();
 
@@ -43,33 +65,53 @@ public class UserRepositoryTest {
         assertThat(savedUser.getEmail()).isEqualTo(userDto.getEmail());
     }
 
-    @DisplayName("비어 있는 user 객체 저장 테스트")
+    @DisplayName("값이 일부 비어 있는 user 객체 저장 테스트 - 객체 insert시 제약조건 위반 테스트")
     @Test
     void saveEmptyUser() {
         //given
-        User user = new User();
+        String password = "asdqwe1234567!@#";
+
+        String encodedPassword = passwordEncoder.encode(password);
+
+        UserDto userDto = UserDto.builder()
+            .name("조영훈")
+            .password(encodedPassword)
+            .phoneNumber("010-1234-1234")
+            .roles(Collections.singletonList("ROLE_USER"))
+            .status(DataStatus.DEFAULT)
+            .build();
 
         //when
-        User savedUser = userRepository.save(user);
+        Throwable thrown = catchThrowable(() -> {
+            userRepository.save(userDto.toEntity());
+        });
+
 
         //then
-        assertThat(savedUser.getEmail()).isNull();
+        assertThat(thrown.getCause()).isInstanceOf(ConstraintViolationException.class);
     }
 
     @DisplayName("user 조회 테스트")
     @Test
     void findUser() {
         //given
+        String password = "asdqwe1234567!@#";
+
+        String encodedPassword = passwordEncoder.encode(password);
+
         UserDto userDto = UserDto.builder()
             .email("whdudgns2654@naver.com")
             .name("조영훈")
-            .password("asdqwe1234567!@#")
+            .password(encodedPassword)
             .phoneNumber("010-1234-1234")
+            .roles(Collections.singletonList("ROLE_USER"))
             .status(DataStatus.DEFAULT)
             .build();
 
         //when
-        User user = userRepository.save(userDto.toEntity());
+        User user = userDto.toEntity();
+
+        userRepository.save(user);
 
         User savedUser = userRepository.findByEmail(userDto.getEmail()).get();
 
@@ -94,16 +136,23 @@ public class UserRepositoryTest {
     @Test
     void existsUser() {
         //given
+        String password = "asdqwe1234567!@#";
+
+        String encodedPassword = passwordEncoder.encode(password);
+
         UserDto userDto = UserDto.builder()
             .email("whdudgns2654@naver.com")
             .name("조영훈")
-            .password("asdqwe1234567!@#")
+            .password(encodedPassword)
             .phoneNumber("010-1234-1234")
+            .roles(Collections.singletonList("ROLE_USER"))
             .status(DataStatus.DEFAULT)
             .build();
 
         //when
-        userRepository.save(userDto.toEntity());
+        User user = userDto.toEntity();
+
+        userRepository.save(user);
 
         boolean existsUser = userRepository.existsByEmail(userDto.getEmail());
 
@@ -128,15 +177,21 @@ public class UserRepositoryTest {
     @Test
     void deleteUser() {
         //given
+        String password = "asdqwe1234567!@#";
+        String encodedPassword = passwordEncoder.encode(password);
+
         UserDto userDto = UserDto.builder()
             .email("whdudgns2654@naver.com")
             .name("조영훈")
-            .password("asdqwe1234567!@#")
+            .password(encodedPassword)
             .phoneNumber("010-1234-1234")
+            .roles(Collections.singletonList("ROLE_USER"))
             .status(DataStatus.DEFAULT)
             .build();
 
-        userRepository.save(userDto.toEntity());
+        User user = userDto.toEntity();
+
+        userRepository.save(user);
 
         //when
         User savedUser = userRepository.findByEmail(userDto.getEmail()).get();
@@ -164,24 +219,28 @@ public class UserRepositoryTest {
     @Test
     void updateUser() {
         //given
+        String password = "asdqwe1234567!@#";
+
+        String encodedPassword = passwordEncoder.encode(password);
+
         UserDto userDto = UserDto.builder()
             .email("whdudgns2654@naver.com")
             .name("조영훈")
-            .password("asdqwe1234567!@#")
+            .password(encodedPassword)
             .phoneNumber("010-1234-1234")
+            .roles(Collections.singletonList("ROLE_USER"))
             .status(DataStatus.DEFAULT)
             .build();
 
         UserDto updateUserDto = UserDto.builder()
-            .email("whdudgns2654@naver.com")
             .name("조영훈11")
-            .password("asdqwe1234568!@#")
             .phoneNumber("010-1234-1235")
-            .status(DataStatus.DEFAULT)
             .build();
 
         //when
-        userRepository.save(userDto.toEntity());
+        User user = userDto.toEntity();
+
+        userRepository.save(user);
 
         User savedUser = userRepository.findByEmail(userDto.getEmail()).get();
 
@@ -189,6 +248,65 @@ public class UserRepositoryTest {
 
         //then
         assertThat(savedUser.getName()).isEqualTo(updateUserDto.getName());
+    }
+
+    @DisplayName("user 비밀번호 수정 테스트")
+    @Test
+    void userChangePassword() {
+        //given
+        String password = "asdqwe1234567!@#";
+
+        String encodedPassword = passwordEncoder.encode(password);
+
+        String newPassword = "asdqwe7234567!@#";
+
+        String encodedNewPassword = passwordEncoder.encode(newPassword);
+
+        UserDto userDto = UserDto.builder()
+            .email("whdudgns2654@naver.com")
+            .name("조영훈")
+            .password(encodedPassword)
+            .phoneNumber("010-1234-1234")
+            .roles(Collections.singletonList("ROLE_USER"))
+            .status(DataStatus.DEFAULT)
+            .build();
+
+        //when
+        User user = userDto.toEntity();
+
+        userRepository.save(user);
+
+        User savedUser = userRepository.findByEmail(userDto.getEmail()).get();
+
+        savedUser.changePassword(encodedNewPassword);
+
+        //then
+        assertThat(passwordEncoder.matches(newPassword, encodedNewPassword)).isTrue();
+    }
+
+    @Test
+    void saveUserAutoAuditedTest() {
+        //given
+        String password = "asdqwe123456!@#";
+
+        String encodedPassword = passwordEncoder.encode(password);
+
+        UserDto userDto = UserDto.builder()
+            .email("whdudgns2654@naver.com")
+            .name("조영훈")
+            .password(encodedPassword)
+            .phoneNumber("010-1234-1234")
+            .roles(Collections.singletonList("ROLE_USER"))
+            .status(DataStatus.DEFAULT)
+            .build();
+
+        //when
+        User savedUser = userRepository.save(userDto.toEntity());
+
+        assertAll(
+            () -> assertNotNull(savedUser.getCreatedAt()),
+            () -> assertNotNull(savedUser.getUpdatedAt())
+        );
     }
 
 }

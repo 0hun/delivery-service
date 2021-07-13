@@ -46,7 +46,8 @@ class StoreServiceTest {
             .storeEnableStatus(StoreEnableStatus.ENABLED)
             .user(User.builder().id(1L).build())
             .build();
-        given(storeRepository.findStoreById(1L)).willReturn(Optional.of(storeEntity));
+
+        given(storeRepository.findById(1L)).willReturn(Optional.of(storeEntity));
 
         // when
         StoreResponseDto store = storeService.find(1L);
@@ -110,7 +111,8 @@ class StoreServiceTest {
             .businessNumber("123-33-12345")
             .storeEnableStatus(StoreEnableStatus.ENABLED)
             .build();
-        given(storeRepository.findStoreById(1L)).willReturn(Optional.of(store));
+
+        given(storeRepository.findById(1L)).willReturn(Optional.of(store));
 
         // when
         storeService.update(1L, storeRequest);
@@ -130,7 +132,8 @@ class StoreServiceTest {
             .managerName("윤호")
             .businessNumber("123-33-12345")
             .build();
-        given(storeRepository.findStoreById(1L)).willReturn(Optional.empty());
+
+        given(storeRepository.findById(1L)).willReturn(Optional.empty());
 
         // when
         // then

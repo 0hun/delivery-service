@@ -1,15 +1,12 @@
 package com.delivery.store.service;
 
 import java.util.NoSuchElementException;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.delivery.store.domain.Store;
 import com.delivery.store.dto.request.StoreRequestDto;
 import com.delivery.store.dto.response.StoreResponseDto;
 import com.delivery.store.repository.StoreRepository;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -21,6 +18,7 @@ public class StoreService {
     public StoreResponseDto find(long storeId) {
         Store store = storeRepository.findStoreById(storeId)
             .orElseThrow(() -> new NoSuchElementException("해당 storeId가 존재하지 않습니다. storeId : " + storeId));
+
         return new StoreResponseDto(store);
     }
 
@@ -40,6 +38,7 @@ public class StoreService {
     public void delete(long storeId) {
         Store store = storeRepository.findStoreById(storeId)
             .orElseThrow(() -> new NoSuchElementException("해당 storeId가 존재하지 않습니다. storeId : " + storeId));
+
         store.disableStore();
     }
 }

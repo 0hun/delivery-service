@@ -2,23 +2,29 @@ package com.delivery.store.dto.response;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
 import com.delivery.store.domain.Store;
-
 import lombok.Getter;
 
 @Getter
 public class StoreResponseDto {
 
-    private Long id;
-    private String name;
-    private String telephone;
-    private String address;
-    private String managerName;
-    private String businessNumber;
-    private String createdAt;
-    private String updatedAt;
-    private Long userId;
+    private final long id;
+
+    private final String name;
+
+    private final String telephone;
+
+    private final String address;
+
+    private final String managerName;
+
+    private final String businessNumber;
+
+    private final String createdAt;
+
+    private final String updatedAt;
+
+    private final Long userId;
 
     public StoreResponseDto(Store entity) {
         this.id = entity.getId();
@@ -38,6 +44,7 @@ public class StoreResponseDto {
         }
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
         return localDateTime.format(dateTimeFormatter);
     }
 }

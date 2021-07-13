@@ -1,14 +1,11 @@
 package com.delivery.store.repository.querydsl.impl;
 
-import static com.delivery.store.domain.QStore.store;
-
-import java.util.Optional;
 
 import com.delivery.store.domain.QStore;
+import java.util.Optional;
 import com.delivery.store.domain.Store;
 import com.delivery.store.repository.querydsl.StoreQueryRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

@@ -1,6 +1,9 @@
 package com.delivery.store.domain;
 
+import com.delivery.store.dto.request.StoreRequestDto;
+import com.delivery.user.domain.User;
 import javax.persistence.Column;
+import com.delivery.common.entity.BaseTimeEntity;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -10,10 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.delivery.store.dto.request.StoreRequestDto;
-import com.delivery.user.domain.User;
-
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,13 +28,20 @@ public class Store extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "store_id")
     private Long id;
+
     private String name;
+
     private String telephone;
+
     private String address;
+
     private String managerName;
+
     private String businessNumber;
+
     @Enumerated(EnumType.STRING)
     private StoreEnableStatus storeEnableStatus;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

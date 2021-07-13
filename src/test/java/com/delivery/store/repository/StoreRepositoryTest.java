@@ -5,9 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-
 import javax.persistence.EntityManager;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-
 import com.delivery.config.TestJpaConfig;
 import com.delivery.store.domain.Store;
 import com.delivery.store.domain.StoreEnableStatus;
@@ -61,6 +58,7 @@ class StoreRepositoryTest {
             .businessNumber("123-33-12345")
             .userId(user.getId())
             .build();
+
         storeRepository.save(storeRequestDto.toEntity());
     }
 
@@ -111,6 +109,7 @@ class StoreRepositoryTest {
 
         // then
         Store store = stores.get(0);
+
         assertThat(store.getName()).isEqualTo(storeRequestDto.getName());
     }
 
@@ -125,6 +124,7 @@ class StoreRepositoryTest {
             .managerName("황윤호")
             .businessNumber("123-33-12345")
             .build();
+
         Store store = storeRepository.findStoreById(1L)
             .orElseThrow(() -> new NoSuchElementException("해당 ID는 존재하지 않습니다."));
 
