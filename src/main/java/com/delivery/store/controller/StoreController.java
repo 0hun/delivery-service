@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.delivery.store.model.entity.Store;
-import com.delivery.store.model.request.StoreRequestDto;
-import com.delivery.store.model.response.StoreResponseDto;
+import com.delivery.store.domain.Store;
+import com.delivery.store.dto.request.StoreRequestDto;
+import com.delivery.store.dto.response.StoreResponseDto;
 import com.delivery.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
 
@@ -31,7 +31,7 @@ public class StoreController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody StoreRequestDto storeRequest) throws URISyntaxException {
+    public ResponseEntity<Void> create(@Valid @RequestBody StoreRequestDto storeRequest) throws URISyntaxException {
         Store store = storeService.create(storeRequest);
 
         return ResponseEntity.created(new URI("/stores/" + store.getId())).build();
