@@ -11,7 +11,7 @@
 
 
 ### 사용 기술
-+ Spring Boot, Gradle, , Mysql, Redis, Java8, restApi
++ Spring Boot, Gradle, Mysql, Redis, Java8, RestApi, QueryDsl, Spring Security, Jenkins, Docker, k8s
 
 ### 기술적인 집중 요소
 + 객체지향의 기본 원리와 spring의 IOC/DI , AOP, PSA 활용과 의미 있는 코드 작성
