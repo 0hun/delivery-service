@@ -37,5 +37,6 @@ Git Flow를 사용하여 branch를 관리
 https://aquerytool.com:443/aquerymain/index/?rurl=ac7647bc-0794-46a1-8752-22f88fc8abd1
 
 
-
+### WIKI
+해당 프로젝트의 모든 정보는 [WIKI](https://github.com/0hun/delivery-service/wiki)를 통해 참고하실 수 있습니다.
 
