@@ -41,9 +41,9 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
-        User user = userService.add(userDto);
+        userService.add(userDto);
 
-        return ResponseEntity.created(new URI("/users/" + user.getId())).build();
+        return ResponseEntity.ok().build();
     }
 
     /**
@@ -52,8 +52,8 @@ public class UserController {
      * @return ResponseEntity(성공시 200 code, 실패시 NoSuchElementException)
      */
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> findUser(@PathVariable long id) {
-        UserDto userDto = userService.find(id);
+    public ResponseEntity<UserDto> find(@PathVariable long id) {
+        UserDto userDto = userService.findById(id);
 
         return ResponseEntity.ok(userDto);
     }
@@ -64,7 +64,7 @@ public class UserController {
      * @return ResponseEntity(성공시 204 code, 실패시 NoSuchElementException)
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable long id) {
+    public ResponseEntity<Void> delete(@PathVariable long id) {
         userService.delete(id);
 
         return ResponseEntity.noContent().build();
@@ -76,7 +76,7 @@ public class UserController {
      * @return ResponseEntity(성공시 204 code, 실패시 NoSuchElementException)
      */
     @PatchMapping()
-    public ResponseEntity<Void> updateUser(@RequestBody @Valid UserDto userDto) {
+    public ResponseEntity<Void> update(@RequestBody @Valid UserDto userDto) {
         userService.update(userDto);
 
         return ResponseEntity.noContent().build();

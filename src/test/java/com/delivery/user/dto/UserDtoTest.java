@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.delivery.user.domain.DataStatus;
 import com.delivery.user.domain.User;
-import com.delivery.user.domain.UserRole;
+import com.delivery.common.domain.UserRole;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;

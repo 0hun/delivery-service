@@ -1,6 +1,7 @@
 package com.delivery.user.domain;
 
 import com.delivery.common.domain.BaseTimeEntity;
+import com.delivery.common.domain.UserRole;
 import com.delivery.user.dto.UserDto;
 import java.util.Collection;
 import java.util.Objects;
@@ -12,10 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -27,7 +26,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Getter
 @Entity
 @Table(name = "user")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseTimeEntity implements UserDetails {
 
     // 아이디(pk)
@@ -58,6 +56,9 @@ public class User extends BaseTimeEntity implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
+
+    protected User() {
+    }
 
     @Builder
     public User(Long id, String email, String password, String name, String phoneNumber,

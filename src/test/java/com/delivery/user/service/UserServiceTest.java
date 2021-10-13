@@ -7,7 +7,7 @@ import static org.mockito.BDDMockito.given;
 
 import com.delivery.user.domain.DataStatus;
 import com.delivery.user.domain.User;
-import com.delivery.user.domain.UserRole;
+import com.delivery.common.domain.UserRole;
 import com.delivery.user.dto.UserChangePasswordDto;
 import com.delivery.user.dto.UserDto;
 import com.delivery.user.repository.UserRepository;
@@ -53,7 +53,7 @@ public class UserServiceTest {
         given(userRepository.findById(mockUser.getId())).willReturn(Optional.of(mockUser));
 
         //when
-        UserDto userDto = userService.find(mockUser.getId());
+        UserDto userDto = userService.findById(mockUser.getId());
 
         //then
         assertThat(userDto).isEqualTo(mockUserUserDto);
@@ -68,7 +68,7 @@ public class UserServiceTest {
         given(userRepository.findByEmail(email)).willReturn(Optional.empty());
 
         //when
-        Throwable thrown = catchThrowable(() -> userService.find(email));
+        Throwable thrown = catchThrowable(() -> userService.findByEmail(email));
 
         //then
         assertThat(thrown).isInstanceOf(NoSuchElementException.class);
@@ -155,7 +155,7 @@ public class UserServiceTest {
         //when
         userService.delete(mockUser.getId());
 
-        UserDto userDto = userService.find(mockUser.getId());
+        UserDto userDto = userService.findById(mockUser.getId());
 
         //then
         assertThat(userDto.getStatus()).isEqualTo(DataStatus.DELETED);
@@ -204,7 +204,7 @@ public class UserServiceTest {
         //when
         userService.update(updateUserDto);
 
-        UserDto userDto = userService.find(mockUser.getEmail());
+        UserDto userDto = userService.findByEmail(mockUser.getEmail());
 
         //then
         assertThat(userDto.getEmail()).isEqualTo(updateUserDto.getEmail());

@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.delivery.common.config.JpaAuditingConfig;
 import com.delivery.user.domain.DataStatus;
 import com.delivery.user.domain.User;
-import com.delivery.user.domain.UserRole;
+import com.delivery.common.domain.UserRole;
 import com.delivery.user.dto.UserDto;
 import java.util.Optional;
 import org.hibernate.exception.ConstraintViolationException;

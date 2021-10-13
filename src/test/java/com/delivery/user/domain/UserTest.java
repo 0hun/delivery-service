@@ -2,6 +2,7 @@ package com.delivery.user.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.delivery.common.domain.UserRole;
 import com.delivery.user.dto.UserDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

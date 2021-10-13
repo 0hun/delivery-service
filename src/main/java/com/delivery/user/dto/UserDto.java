@@ -2,7 +2,7 @@ package com.delivery.user.dto;
 
 import com.delivery.user.domain.DataStatus;
 import com.delivery.user.domain.User;
-import com.delivery.user.domain.UserRole;
+import com.delivery.common.domain.UserRole;
 import java.util.Objects;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
