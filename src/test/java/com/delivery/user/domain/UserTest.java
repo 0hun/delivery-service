@@ -2,6 +2,7 @@ package com.delivery.user.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.delivery.common.domain.UserRole;
 import com.delivery.user.dto.UserDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -18,6 +19,7 @@ public class UserTest {
             .name("조영훈")
             .password("asdqwe1234567!@#")
             .phoneNumber("010-1234-1234")
+            .role(UserRole.ROLE_USER)
             .status(DataStatus.DEFAULT)
             .build();
 
@@ -38,6 +40,7 @@ public class UserTest {
             .password("asdqwe1234567!@#")
             .phoneNumber("010-1234-1234")
             .status(DataStatus.DEFAULT)
+            .role(UserRole.ROLE_USER)
             .build();
 
         //when
@@ -46,6 +49,7 @@ public class UserTest {
         String password = userDto.getPassword();
         String phoneNumber = userDto.getPhoneNumber();
         DataStatus status = userDto.getStatus();
+        UserRole userRole = userDto.getRole();
 
         //then
         Assertions.assertAll(
@@ -53,7 +57,8 @@ public class UserTest {
             () -> assertThat(name).isEqualTo("조영훈"),
             () -> assertThat(password).isEqualTo("asdqwe1234567!@#"),
             () -> assertThat(phoneNumber).isEqualTo("010-1234-1234"),
-            () -> assertThat(status).isEqualTo(DataStatus.DEFAULT)
+            () -> assertThat(status).isEqualTo(DataStatus.DEFAULT),
+            () -> assertThat(userRole).isEqualTo(UserRole.ROLE_USER)
         );
     }
 
@@ -68,6 +73,7 @@ public class UserTest {
             .password("asdqwe1234567!@#")
             .phoneNumber("010-1234-1234")
             .status(DataStatus.DEFAULT)
+            .role(UserRole.ROLE_USER)
             .build();
 
         //when

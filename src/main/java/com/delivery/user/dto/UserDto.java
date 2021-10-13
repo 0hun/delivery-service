@@ -2,9 +2,7 @@ package com.delivery.user.dto;
 
 import com.delivery.user.domain.DataStatus;
 import com.delivery.user.domain.User;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import com.delivery.common.domain.UserRole;
 import java.util.Objects;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -42,21 +40,21 @@ public class UserDto {
     // 상태 DEFAULT(기본), DELETED(삭제됨)
     private DataStatus status;
 
-    private List<String> roles = new ArrayList<>();
+    private UserRole role;
 
     public UserDto() {
     }
 
     @Builder
     public UserDto(long id, String email, String password, String name, String phoneNumber,
-        DataStatus status, List<String> roles) {
+        DataStatus status, UserRole role) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.status = status;
-        this.roles = roles;
+        this.role = role;
     }
 
     public User toEntity() {
@@ -65,7 +63,7 @@ public class UserDto {
             .password(this.password)
             .name(this.name)
             .phoneNumber(this.phoneNumber)
-            .roles(Collections.singletonList("ROLE_USER")) // 최초 가입시 USER 로 설정
+            .role(UserRole.ROLE_USER) // 최초 가입시 USER 로 설정
             .status(DataStatus.DEFAULT)
             .build();
     }
@@ -76,7 +74,7 @@ public class UserDto {
             .email(user.getEmail())
             .name(user.getName())
             .phoneNumber(user.getPhoneNumber())
-            .roles(user.getRoles())
+            .role(user.getRole())
             .status(user.getStatus())
             .build();
     }
@@ -93,11 +91,11 @@ public class UserDto {
         return id == userDto.id && Objects.equals(email, userDto.email) && Objects
             .equals(password, userDto.password) && Objects.equals(name, userDto.name)
             && Objects.equals(phoneNumber, userDto.phoneNumber) && status == userDto.status
-            && Objects.equals(roles, userDto.roles);
+            && Objects.equals(role, userDto.role);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, password, name, phoneNumber, status, roles);
+        return Objects.hash(id, email, password, name, phoneNumber, status, role);
     }
 }

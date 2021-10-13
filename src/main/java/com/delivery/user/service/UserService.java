@@ -18,14 +18,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserDto find(long id) {
+    public UserDto findById(long id) {
         User user = userRepository.findById(id)
             .orElseThrow(NoSuchElementException::new);
 
         return UserDto.of(user);
     }
 
-    public UserDto find(String email) {
+    public UserDto findByEmail(String email) {
         User user = userRepository.findByEmail(email)
             .orElseThrow(NoSuchElementException::new);
 

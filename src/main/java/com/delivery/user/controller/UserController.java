@@ -29,46 +29,42 @@ public class UserController {
     private final UserService userService;
 
     /**
-     * 회원 가입 메소드 회원 가입 성공시 201(Created) code return. 객체 valitaion 실패시 에러 정보와 400(Bad Request) code
-     * return.
-     *
+     * 회원 가입 메소드 회원 가입 성공시 201(Created) code return. 객체 valitaion 실패시 에러 정보와 400(Bad Request) code return
      * @param userDto 저장할 회원의 정보
      * @return ResponseEntity(성공시 201 code, 실패시 400 code)
      */
     @PostMapping()
-    public ResponseEntity<?> addUser(@RequestBody @Valid UserDto userDto) throws URISyntaxException {
+    public ResponseEntity<?> signUp(@RequestBody @Valid UserDto userDto) throws URISyntaxException {
         boolean existsUser = userService.existsByEmail(userDto.getEmail());
 
         if (existsUser) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
-        User user = userService.add(userDto);
+        userService.add(userDto);
 
-        return ResponseEntity.created(new URI("/users/" + user.getId())).build();
+        return ResponseEntity.ok().build();
     }
 
     /**
      * 회원 조회 메소드 회원 조회 성공시 200(ok) and User return
-     *
      * @param id 회원 아이디
      * @return ResponseEntity(성공시 200 code, 실패시 NoSuchElementException)
      */
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> findUser(@PathVariable long id) {
-        UserDto userDto = userService.find(id);
+    public ResponseEntity<UserDto> find(@PathVariable long id) {
+        UserDto userDto = userService.findById(id);
 
         return ResponseEntity.ok(userDto);
     }
 
     /**
      * 회원 조회 메소드 회원 삭제 성공시 204
-     *
      * @param id 회원 아이디
      * @return ResponseEntity(성공시 204 code, 실패시 NoSuchElementException)
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable long id) {
+    public ResponseEntity<Void> delete(@PathVariable long id) {
         userService.delete(id);
 
         return ResponseEntity.noContent().build();
@@ -76,12 +72,11 @@ public class UserController {
 
     /**
      * 회원 수정 메소드 회원 수정 성공시 204
-     *
      * @param userDto 수정할 회원의 정보
      * @return ResponseEntity(성공시 204 code, 실패시 NoSuchElementException)
      */
     @PatchMapping()
-    public ResponseEntity<Void> updateUser(@RequestBody @Valid UserDto userDto) {
+    public ResponseEntity<Void> update(@RequestBody @Valid UserDto userDto) {
         userService.update(userDto);
 
         return ResponseEntity.noContent().build();
@@ -89,7 +84,6 @@ public class UserController {
 
     /**
      * 회원 수정 메소드 회원 비밀번호 수정 성공시 204
-     *
      * @param dto 비밀번호 수정할 회원의 정보
      * @return ResponseEntity(성공시 204 code, 실패시 NoSuchElementException)
      */

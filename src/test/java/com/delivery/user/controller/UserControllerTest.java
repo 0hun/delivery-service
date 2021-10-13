@@ -69,8 +69,7 @@ public class UserControllerTest {
             .content(new Gson().toJson(userDto))
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
-            .andExpect(redirectedUrl("/users/1"))
-            .andExpect(status().isCreated())
+            .andExpect(status().isOk())
             .andDo(print());
     }
 
@@ -132,7 +131,7 @@ public class UserControllerTest {
 
         UserDto userDto = UserDto.of(user);
 
-        given(userService.find(user.getId())).willReturn(userDto);
+        given(userService.findById(user.getId())).willReturn(userDto);
 
         // when
         // then
@@ -150,7 +149,7 @@ public class UserControllerTest {
         // given
         long userId = 1L;
 
-        given(userService.find(userId)).willThrow(NoSuchElementException.class);
+        given(userService.findById(userId)).willThrow(NoSuchElementException.class);
 
         // when
         mockMvc.perform(get("/users/" + userId)

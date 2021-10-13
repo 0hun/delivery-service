@@ -9,8 +9,8 @@ import com.delivery.common.config.JpaAuditingConfig;
 import com.delivery.config.TestJpaConfig;
 import com.delivery.user.domain.DataStatus;
 import com.delivery.user.domain.User;
+import com.delivery.common.domain.UserRole;
 import com.delivery.user.dto.UserDto;
-import java.util.Collections;
 import java.util.Optional;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.DisplayName;
@@ -52,7 +52,7 @@ public class UserRepositoryTest {
             .name("조영훈")
             .password(encodedPassword)
             .phoneNumber("010-1234-1234")
-            .roles(Collections.singletonList("ROLE_USER"))
+            .role(UserRole.ROLE_USER)
             .status(DataStatus.DEFAULT)
             .build();
 
@@ -77,7 +77,7 @@ public class UserRepositoryTest {
             .name("조영훈")
             .password(encodedPassword)
             .phoneNumber("010-1234-1234")
-            .roles(Collections.singletonList("ROLE_USER"))
+            .role(UserRole.ROLE_USER)
             .status(DataStatus.DEFAULT)
             .build();
 
@@ -104,7 +104,7 @@ public class UserRepositoryTest {
             .name("조영훈")
             .password(encodedPassword)
             .phoneNumber("010-1234-1234")
-            .roles(Collections.singletonList("ROLE_USER"))
+            .role(UserRole.ROLE_USER)
             .status(DataStatus.DEFAULT)
             .build();
 
@@ -145,7 +145,7 @@ public class UserRepositoryTest {
             .name("조영훈")
             .password(encodedPassword)
             .phoneNumber("010-1234-1234")
-            .roles(Collections.singletonList("ROLE_USER"))
+            .role(UserRole.ROLE_USER)
             .status(DataStatus.DEFAULT)
             .build();
 
@@ -185,7 +185,7 @@ public class UserRepositoryTest {
             .name("조영훈")
             .password(encodedPassword)
             .phoneNumber("010-1234-1234")
-            .roles(Collections.singletonList("ROLE_USER"))
+            .role(UserRole.ROLE_USER)
             .status(DataStatus.DEFAULT)
             .build();
 
@@ -228,7 +228,7 @@ public class UserRepositoryTest {
             .name("조영훈")
             .password(encodedPassword)
             .phoneNumber("010-1234-1234")
-            .roles(Collections.singletonList("ROLE_USER"))
+            .role(UserRole.ROLE_USER)
             .status(DataStatus.DEFAULT)
             .build();
 
@@ -267,7 +267,7 @@ public class UserRepositoryTest {
             .name("조영훈")
             .password(encodedPassword)
             .phoneNumber("010-1234-1234")
-            .roles(Collections.singletonList("ROLE_USER"))
+            .role(UserRole.ROLE_USER)
             .status(DataStatus.DEFAULT)
             .build();
 
@@ -296,7 +296,7 @@ public class UserRepositoryTest {
             .name("조영훈")
             .password(encodedPassword)
             .phoneNumber("010-1234-1234")
-            .roles(Collections.singletonList("ROLE_USER"))
+            .role(UserRole.ROLE_USER)
             .status(DataStatus.DEFAULT)
             .build();
 
