@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.delivery.common.config.JpaAuditingConfig;
+import com.delivery.config.TestJpaConfig;
 import com.delivery.user.domain.DataStatus;
 import com.delivery.user.domain.User;
 import com.delivery.common.domain.UserRole;
@@ -20,13 +21,16 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(
     type = FilterType.ASSIGNABLE_TYPE,
     classes = JpaAuditingConfig.class
 ))
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Import(TestJpaConfig.class)
 public class UserRepositoryTest {
 
     @Autowired
